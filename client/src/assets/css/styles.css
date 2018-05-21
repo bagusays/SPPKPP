@@ -1,0 +1,187 @@
+:root {
+    --primary-color: #414C58;
+    --primary-color-hover: rgb(105, 123, 142);
+}
+
+body {
+    background-color: #EAEDF2;
+    color: #414C58 !important;
+    font-size: 14px;
+    font-weight: 500;
+    text-transform: none;
+    letter-spacing: normal;
+    word-wrap: normal;
+    direction: ltr;
+
+    /* Support for all WebKit browsers. */
+    -webkit-font-smoothing: antialiased;
+    /* Support for Safari and Chrome. */
+    text-rendering: optimizeLegibility;
+
+    /* Support for Firefox. */
+    -moz-osx-font-smoothing: grayscale;
+
+    /* Support for IE. */
+    font-feature-settings: 'liga';
+}
+
+.row {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.content {
+    padding-top: 20px;
+    padding-bottom: 20px;
+    -webkit-animation-duration: .5s;
+}
+
+.footer {
+    position: absolute;
+    font-size: 12px;
+    padding: 5px 0px 5px 0px;
+    bottom: 0px;
+    text-align: center;
+}
+
+.d-inline-block {
+    margin: 0px 5px 0px 5px;
+}
+
+.navbar {
+    box-shadow: 0 3px 5px -1px rgba(0,0,0,.2), 0 6px 10px 0 rgba(0,0,0,.14), 0 1px 18px 0 rgba(0,0,0,.12);
+    background-color: #414C58 !important;
+    /* text-transform: uppercase; */
+}
+
+#mainNav.fixed-top .navbar-sidenav {
+    height: calc(107vh - 112px);
+}
+
+.active {
+    font-weight: bold;
+}
+
+.material-icons {
+    font-size: 18px;
+}
+
+.card {
+    box-shadow: 0 5px 15px rgba(10,10,10,.1);
+    border-radius: 0px;
+}
+
+.card-header {
+    font-size: 17px;
+    padding: .75rem 1.25rem;
+    margin-bottom: 0;
+    color: white;
+    background-color: var(--primary-color);
+    border-radius: 0px !important;
+}
+
+.card-body {
+    padding: 30px;
+}
+
+/* .overlay-loading {
+    position: relative;
+} */
+
+#loading-page {
+    width: 100%;
+    height: 100vh;
+    position: fixed;
+    margin-top: -72px;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: rgb(255, 255, 255);
+    z-index: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+#loading-element {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.69); /*dim the background*/
+}
+
+.hide {
+    display: none;
+}
+
+.title-page {
+    font-size: 25px;
+}
+
+.button-action {
+    margin-left: 5px;
+    margin-right: 5px;
+    background-color: var(--primary-color);
+    color: whitesmoke;
+}
+
+.button-action-outline{
+    background-color: transparent;
+    border: solid whitesmoke 2px;
+}
+
+.btn.button-action:hover{
+    background-color: var(--primary-color-hover) !important;
+    color: whitesmoke;
+}
+
+hr {
+    margin-left: 0;
+    width: 20%;
+}
+
+th {
+    text-align: center;
+}
+
+.thead {
+    background-color: var(--primary-color);
+    color: white;
+    font-weight: lighter !important;
+}
+
+.table-hover tr:hover td{
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.table {
+    font-size: 14px !important;
+}
+
+.fa.fa-fw{
+    margin-left: 3px;
+    margin-right: 3px;
+}
+
+.sticky-footer{
+    font-size: 14px;
+}
+
+.toast {
+    font-size: 20px !important;
+    padding: 15px 40px 15px 40px !important;
+}
+
+.invalid-form {
+    color: red;
+    margin-top: 7px;
+    margin-bottom: 0px;
+}
