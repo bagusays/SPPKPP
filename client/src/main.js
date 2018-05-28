@@ -12,6 +12,7 @@ import { Navbar } from 'bootstrap-vue/es/components';
 
 
 import helpers from './helpers'
+import constants from './constants';
 import App from './App'
 import router from './router'
 
@@ -25,6 +26,7 @@ Vue.use(Toasted, {
   className: 'toast'
 })
 Vue.use(helpers)
+Vue.use(constants)
 Vue.use(Navbar);
 Vue.use(VeeValidate);
 

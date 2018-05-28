@@ -31,9 +31,14 @@
 						link: '/kriteria'
 					},
 					{
-						title: ' Data Pemesan',
+						title: ' Orders',
 						icon: 'fa-table',
-						link: '/data-pemesan'
+						link: '/orders'
+					},
+					{
+						title: ' Customers',
+						icon: 'fa-user',
+						link: '/customers'
 					}
 				]
 			}

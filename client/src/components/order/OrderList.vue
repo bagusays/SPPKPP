@@ -15,7 +15,7 @@
 								<i class="fa fa-fw fa-signal"> </i>
 								<span>Cari Prioritas</span>
 							</button>
-							<router-link to="/data-pemesan/tambah" class="btn button-action">
+							<router-link to="/orders/tambah" class="btn button-action">
 								<i class="fa fa-fw fa-plus"> </i>
 								<span>Tambah</span>
 							</router-link>
@@ -125,7 +125,7 @@
 		return {
 			isLoading: false,
 			search: '',
-			page: 'Data Pemesan',
+			page: 'List Order',
 			isChartShow: false,
 			dataChart: null,
 			labels: null,
