@@ -13,7 +13,7 @@
             <div id="loading-element" v-if="isLoading"><img src="/img/loader.svg" class="loader" /></div>
             <form v-on:submit.prevent="onSubmit()">
                 <div class="form-group row">
-                    <label class="col-md-2 col-form-label">Nama</label>
+                    <label class="col-md-2 col-form-label">Nama<required-tag></required-tag></label>
                     <div class="col-md-4">
                         <input type="text" v-bind:class="errors.has('nama') ? 'is-invalid' : ''" name="nama" v-validate="'required|alpha'" class="form-control" required/>
                         <p v-show="errors.has('nama')" class="invalid-form">{{ errors.first('nama') }}</p>
@@ -21,7 +21,7 @@
                 </div>
 
                 <div class="form-group row">
-                    <label class="col-md-2 col-form-label">Jenis Kue</label>
+                    <label class="col-md-2 col-form-label">Jenis Kue<required-tag></required-tag></label>
                     <div class="col-md-4">
                         <vue-multiselect v-model="jenisKue" v-bind:options="jenisKueOptions" v-bind:multiple="true" v-bind:close-on-select="false" v-bind:clear-on-select="false" v-bind:hide-selected="true" v-bind:preserve-search="true" placeholder="Pick some" label="attribut"
                             track-by="attribut" v-bind:preselect-first="false" name="jenisKue" v-bind:class="errors.has('jenisKue') ? 'is-invalid' : ''" v-validate="'required'" required></vue-multiselect>
@@ -30,7 +30,7 @@
                 </div>
 
                 <div class="form-group row">
-                    <label class="col-md-2 col-form-label">Kebawelan Pelanggan</label>
+                    <label class="col-md-2 col-form-label">Kebawelan Pelanggan<required-tag></required-tag></label>
                     <div class="col-md-4">
                         <select class="custom-select">
                             <option v-for="item in kebawelanPelangganOptions" :key="item.attribut" value="item.bobot">{{item.attribut}}</option>
@@ -38,7 +38,7 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label class="col-md-2 col-form-label">Kesulitan Bahan Pokok</label>
+                    <label class="col-md-2 col-form-label">Kesulitan Bahan Pokok<required-tag></required-tag></label>
                     <div class="col-md-4">
                         <select class="custom-select">
                             <option v-for="item in kesulitanBahanPokokOptions" :key="item.attribut" value="item.bobot">{{item.attribut}}</option>
@@ -46,7 +46,7 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label class="col-md-2 col-form-label">Jarak Pengiriman</label>
+                    <label class="col-md-2 col-form-label">Jarak Pengiriman<required-tag></required-tag></label>
                     <div class="col-md-4">
                         <select class="custom-select">
                             <option v-for="item in jarakPengirimanOptions" :key="item.attribut" value="item.bobot">{{item.attribut}}</option>
@@ -55,7 +55,7 @@
                 </div>
 
                 <div class="form-group row">
-                    <label class="col-md-2 col-form-label">Deadline</label>
+                    <label class="col-md-2 col-form-label">Deadline<required-tag></required-tag></label>
                     <div class="col-md-4">
                         <div class="input-group mb-3">
                             <div class="input-group-prepend">
@@ -70,7 +70,7 @@
                 </div>
 
                 <div class="form-group row">
-                    <label class="col-md-2 col-form-label">Tenaga Kerja</label>
+                    <label class="col-md-2 col-form-label">Tenaga Kerja<required-tag></required-tag></label>
                     <div class="col-md-4">
                         <select class="custom-select">
                         <option v-for="item in tenagaKerjaOptions" :key="item.attribut" value="item.bobot">{{item.attribut}}</option>
@@ -78,7 +78,7 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label class="col-md-2 col-form-label">Total Kuantitas</label>
+                    <label class="col-md-2 col-form-label">Total Kuantitas<required-tag></required-tag></label>
                     <div class="col-md-1">
                         <input type="text" name="kuantitas" :class="errors.has('kuantitas') ? 'is-invalid' : ''" v-validate="'required|numeric'" class="form-control" required/>
                     </div>

@@ -13,7 +13,7 @@
             <div id="loading-element" v-if="isLoading"><img src="/img/loader.svg" class="loader" /></div>
             <form v-on:submit.prevent="onSubmit()">
                 <div class="form-group row">
-                    <label class="col-md-2 col-form-label">Nama</label>
+                    <label class="col-md-2 col-form-label">Nama<required-tag></required-tag></label>
                     <div class="col-md-4">
                         <input type="text" v-bind:class="errors.has('nama') ? 'is-invalid' : ''" name="nama" v-validate="'required|alpha'" class="form-control" required/>
                         <p v-show="errors.has('nama')" class="invalid-form">{{ errors.first('nama') }}</p>
@@ -21,7 +21,7 @@
                 </div>
 
                 <div class="form-group row">
-                    <label class="col-md-2 col-form-label">No Telepon</label>
+                    <label class="col-md-2 col-form-label">No Telepon<required-tag></required-tag></label>
                     <div class="col-md-4">
                         <input type="text" name="noTelepon" :class="errors.has('noTelepon') ? 'is-invalid' : ''" v-validate="'required|numeric'" class="form-control" required/>
                         <p v-show="errors.has('noTelepon')" class="invalid-form">{{ errors.first('noTelepon') }}</p>
