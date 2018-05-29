@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 const model = require('./Index');
 
-const Customer = model.define('pp_customers', {
+const Customers = model.define('pp_customers', {
     IdCustomer: {
         type: Sequelize.INTEGER,
         primaryKey: true
@@ -19,4 +19,4 @@ const Customer = model.define('pp_customers', {
     timestamps: false
 });
 
-module.exports = Customer;
+module.exports = Customers;
