@@ -1,4 +1,5 @@
 const Customers = require('../Model/Customers')
+const jsonParse = require('../Helper/json-parse')
 
 class CustomerService {
     constructor() { }
@@ -6,9 +7,22 @@ class CustomerService {
     async getAllCustomer() {
         try {
             const data = await Customers.findAll();
+            return jsonParse(data)
+        } catch (error) {
+            return jsonParse(error.message, 500)
+        }
+    }
+
+    async detailCustomer(param) {
+        try {
+            const data = await Customers.findOne({
+                where: {
+                    IdCustomer: param
+                }
+            })
             return { result: data }
         } catch (error) {
-            return { status: 500, result: error.message }
+            return jsonParse(error.message, 500)
         }
     }
 
@@ -21,12 +35,12 @@ class CustomerService {
                 Address
             }, {
                 where: {
-                    IdCustomer
+                    ICustomer
                 }
             })
-            return { result: "ok" }
+            return jsonParse("ok")
         } catch (error) {
-            return { status: 500, result: error.message }
+            return jsonParse(error.message, 500)
         }
     }
 }
