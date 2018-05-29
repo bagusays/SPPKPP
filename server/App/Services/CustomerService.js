@@ -35,10 +35,10 @@ class CustomerService {
                 Address
             }, {
                 where: {
-                    ICustomer
+                    IdCustomer
                 }
             })
-            return jsonParse("ok")
+            return jsonParse("Data customer berhasil di ubah.")
         } catch (error) {
             return jsonParse(error.message, 500)
         }

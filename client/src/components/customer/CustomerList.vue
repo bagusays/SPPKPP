@@ -35,9 +35,13 @@
                                     <td class="text-center">{{data.PhoneNumber}}</td>
                                     <td class="text-center" v-bind:style="[data.Address == '-' ? {'color': 'red'} : {}]">{{ data.Address }}</td>
                                     <td class="text-center">
-                                        <button class="btn btn-sm button-action">
-                                            <i class="fa fa-fw fa-edit"> </i>
-                                        </button>
+                                                <router-link :to="'/customers/edit/' + data.IdCustomer">
+                                        
+                                            <button class="btn btn-sm button-action">
+                                                <i class="fa fa-fw fa-edit"></i>
+                                            </button>
+                                                </router-link>
+                                        
                                         <button class="btn btn-sm button-action">
                                             <i class="fa fa-fw fa-trash"> </i>
                                         </button>
@@ -79,7 +83,7 @@ export default {
     methods: {
         async getCustomers() {
             const result = await axios.get(`${this.$basevar.baseUrl}/customers/list`);
-            this.rawListCustomers = result.data;
+            this.rawListCustomers = result.data.result;
         }
     }
 }

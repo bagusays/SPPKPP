@@ -7,6 +7,7 @@ import OrderTambah from '@/components/order/OrderTambah'
 
 import CustomerList from '@/components/customer/CustomerList'
 import CustomerTambah from '@/components/customer/CustomerTambah'
+import CustomerEdit from '@/components/customer/CustomerEdit'
 
 Vue.use(Router)
 
@@ -19,6 +20,7 @@ export default new Router({
         { path: '/orders/tambah', component: OrderTambah },
         
         { path: '/customers', component: CustomerList },
-		{ path: '/customers/tambah', component: CustomerTambah }
+        { path: '/customers/tambah', component: CustomerTambah },
+        { path: '/customers/edit/:id', component: CustomerEdit }
     ]
 })
