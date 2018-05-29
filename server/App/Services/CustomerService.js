@@ -13,11 +13,11 @@ class CustomerService {
         }
     }
 
-    async detailCustomer(param) {
+    async detailCustomer(IdCustomer) {
         try {
             const data = await Customers.findOne({
                 where: {
-                    IdCustomer: param
+                    IdCustomer
                 }
             })
             return { result: data }
