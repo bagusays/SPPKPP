@@ -4,11 +4,11 @@
         <li style="font-size: 15px;" class="breadcrumb-item"> <router-link to="/customers">List Orders</router-link>
         </li>
         <li class="breadcrumb-item active">
-            Tambah Pemesan
+            Edit Customer
         </li>
     </ol>
     <div class="card">
-        <div class="card-header"><span>Tambah Pemesan</span></div>
+        <div class="card-header"><span>Edit Customer</span></div>
         <div class="card-body">
             <div id="loading-element" v-if="isLoading"><img src="/img/loader.svg" class="loader" /></div>
             <form v-on:submit.prevent="onSubmit()">

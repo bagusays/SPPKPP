@@ -1,7 +1,7 @@
 <template>
 <div>
     <ol class="breadcrumb">
-        <li style="font-size: 15px;" class="breadcrumb-item"> <router-link to="/orders">List Orders</router-link>
+        <li style="font-size: 15px;" class="breadcrumb-item"> <router-link to="/customers">List Customers</router-link>
         </li>
         <li class="breadcrumb-item active">
             Tambah Pemesan
