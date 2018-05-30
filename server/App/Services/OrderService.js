@@ -42,7 +42,7 @@ class OrderService {
                 MAX(CASE WHEN t.IdMasterCriteria = 5 THEN t.SubCriteria ELSE NULL END) AS IntervalDeadlineHari,
                 MAX(CASE WHEN t.IdMasterCriteria = 6 THEN t.SubCriteria ELSE NULL END) AS TenagaKerja,
                 MAX(CASE WHEN t.IdMasterCriteria = 7 THEN t.SubCriteria ELSE NULL END) AS KuantitasPesanan,
-                ROUND(t.HasilPerhitunganPrioritas, 4) AS HasilPerhitunganPrioritas
+                t.HasilPerhitunganPrioritas
             FROM
                 (SELECT
                     t.*,
@@ -73,27 +73,35 @@ class OrderService {
                             WHERE mc.IdMasterCriteria <> 1
                             UNION ALL
                             SELECT
-                                o.IdOrder,
-                                c.IdCustomer,
-                                c.CustomerName,
-                                mc.IdMasterCriteria,
-                                mc.CriteriaValue AS MasterCriteriaValue,
-                                mc.CriteriaName AS MasterCriteria,
-                                CASE WHEN mc.IdMasterCriteria = 1 THEN
-                                    GROUP_CONCAT(IF(mc.CriteriaName = 'Jenis Kue', sc.CriteriaName, NULL) SEPARATOR ', ') 
-                                END AS SubCriteria,
-                                CASE WHEN mc.CriteriaName = 'Jenis Kue' THEN 
-                                    CASE 
-                                        ${paramFuzzy}
-                                    END
-                                END AS CriteriaValue
-                            FROM pp_datacontent dc
-                            INNER JOIN pp_subcriteria sc ON sc.IdSubCriteria = dc.IdSubCriteria
-                            INNER JOIN pp_mastercriteria mc ON mc.IdMasterCriteria = dc.IdMasterCriteria
-                            INNER JOIN pp_orders o ON o.IdOrder = dc.IdOrder
-                            INNER JOIN pp_customers c ON c.IdCustomer = o.IdCustomer
-                            WHERE mc.IdMasterCriteria = 1
-                            GROUP BY mc.CriteriaName, o.IdOrder
+                                t.IdOrder,
+                                t.IdCustomer,
+                                t.CustomerName,
+                                t.IdMasterCriteria,
+                                t.MasterCriteriaValue,
+                                t.MasterCriteria,
+                                t.SubCriteria,
+                                fz.CriteriaValue
+                            FROM
+                                (SELECT
+                                    o.IdOrder,
+                                    c.IdCustomer,
+                                    c.CustomerName,
+                                    mc.IdMasterCriteria,
+                                    mc.CriteriaValue AS MasterCriteriaValue,
+                                    mc.CriteriaName AS MasterCriteria,
+                                    CASE WHEN mc.IdMasterCriteria = 1 THEN
+                                        GROUP_CONCAT(IF(mc.CriteriaName = 'Jenis Kue', sc.CriteriaName, NULL) SEPARATOR ', ') 
+                                    END AS SubCriteria,
+                                    ROUND(SUM(IF(mc.CriteriaName = 'Jenis Kue', sc.CriteriaValue, NULL)), 0) AS TotalBobotJenisKue
+                                FROM pp_datacontent dc
+                                INNER JOIN pp_subcriteria sc ON sc.IdSubCriteria = dc.IdSubCriteria
+                                INNER JOIN pp_mastercriteria mc ON mc.IdMasterCriteria = dc.IdMasterCriteria
+                                INNER JOIN pp_orders o ON o.IdOrder = dc.IdOrder
+                                INNER JOIN pp_customers c ON c.IdCustomer = o.IdCustomer
+                                WHERE mc.IdMasterCriteria = 1
+                                GROUP BY mc.CriteriaName, o.IdOrder
+                                ) t
+                            INNER JOIN pp_fuzzyjeniskuecriteria fz ON fz.IdFuzzy = t.TotalBobotJenisKue
                             UNION ALL
                             SELECT
                                 t.IdOrder,
