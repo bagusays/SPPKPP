@@ -5,6 +5,7 @@ const Orders = require('../Model/Orders')
 const DataContent = require('../Model/DataContent')
 const SubCriteria = require('../Model/SubCriteria')
 const MasterCriteria = require('../Model/MasterCriteria')
+const FuzzyJenisKue = require('../Model/FuzzyJenisKue')
 
 const jsonParse = require('../Helper/json-parse')
 
@@ -14,6 +15,18 @@ class OrderService {
 
     async getAllOrders() {
         try {
+            var fuzzyJenisKue = await FuzzyJenisKue.findAll()
+            fuzzyJenisKue = fuzzyJenisKue.map(res => {
+                res.CriteriaName = res.CriteriaName.replace('-', ' AND ')
+                res.CriteriaValue = res.CriteriaValue
+                return res
+            })
+            var paramFuzzy = ''
+            fuzzyJenisKue = fuzzyJenisKue.forEach(res => {
+                paramFuzzy += `
+                WHEN SUM(IF(mc.CriteriaName = 'Jenis Kue', sc.CriteriaValue, NULL)) BETWEEN ${res.CriteriaName} THEN ${res.CriteriaValue}
+                `
+            })
             const query = `
             SELECT
                 o.IdOrder,
@@ -70,11 +83,8 @@ class OrderService {
                                     GROUP_CONCAT(IF(mc.CriteriaName = 'Jenis Kue', sc.CriteriaName, NULL) SEPARATOR ', ') 
                                 END AS SubCriteria,
                                 CASE WHEN mc.CriteriaName = 'Jenis Kue' THEN 
-                                    CASE WHEN SUM(IF(mc.CriteriaName = 'Jenis Kue', sc.CriteriaValue, NULL)) BETWEEN 1 AND 2 THEN 0.1
-                                        WHEN SUM(IF(mc.CriteriaName = 'Jenis Kue', sc.CriteriaValue, NULL)) BETWEEN 3 AND 5 THEN 0.25
-                                        WHEN SUM(IF(mc.CriteriaName = 'Jenis Kue', sc.CriteriaValue, NULL)) BETWEEN 6 AND 8 THEN 0.5
-                                        WHEN SUM(IF(mc.CriteriaName = 'Jenis Kue', sc.CriteriaValue, NULL)) BETWEEN 9 AND 11 THEN	0.75
-                                        WHEN SUM(IF(mc.CriteriaName = 'Jenis Kue', sc.CriteriaValue, NULL)) BETWEEN 12 AND 15 THEN 1
+                                    CASE 
+                                        ${paramFuzzy}
                                     END
                                 END AS CriteriaValue
                             FROM pp_datacontent dc
