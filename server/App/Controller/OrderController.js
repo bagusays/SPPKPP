@@ -12,4 +12,10 @@ app.get("/orders/parameter", async function(req, res) {
     res.status(data.status || 200).json(data)
 })
 
+app.post("/orders/getDetail", async function(req, res) {
+    const data = await service.getDetail(req.body.IdOrder);
+    res.status(data.status || 200).json(data)
+})
+
+
 module.exports = app;

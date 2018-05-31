@@ -1,33 +1,14 @@
 const _ = require('lodash')
 
-const Sequelize = require('../Model/Index')
-const Orders = require('../Model/Orders')
-const DataContent = require('../Model/DataContent')
-const SubCriteria = require('../Model/SubCriteria')
-const MasterCriteria = require('../Model/MasterCriteria')
-const FuzzyJenisKue = require('../Model/FuzzyJenisKue')
+// const Sequelize = require('../Model/Index')
+const db = require('../../db')
 
 const jsonParse = require('../Helper/json-parse')
 
 class OrderService {
-
-    constructor() { }
-
-    async getAllOrders() {
-        try {
-            var fuzzyJenisKue = await FuzzyJenisKue.findAll()
-            fuzzyJenisKue = fuzzyJenisKue.map(res => {
-                res.CriteriaName = res.CriteriaName.replace('-', ' AND ')
-                res.CriteriaValue = res.CriteriaValue
-                return res
-            })
-            var paramFuzzy = ''
-            fuzzyJenisKue = fuzzyJenisKue.forEach(res => {
-                paramFuzzy += `
-                WHEN SUM(IF(mc.CriteriaName = 'Jenis Kue', sc.CriteriaValue, NULL)) BETWEEN ${res.CriteriaName} THEN ${res.CriteriaValue}
-                `
-            })
-            const query = `
+    
+    constructor() { 
+        this.QUERY_GET_ALL_ORDERS = `
             SELECT
                 o.IdOrder,
                 t.IdCustomer,
@@ -132,8 +113,13 @@ class OrderService {
             GROUP BY t.customername
             ORDER BY t.HasilPerhitunganPrioritas desc
             `
-            const data = await Sequelize.query(query, {type: Sequelize.QueryTypes.SELECT})
-            return jsonParse(data)
+
+    }
+
+    async getAllOrders() {
+        try {
+            const data = await db.raw(this.QUERY_GET_ALL_ORDERS)
+            return jsonParse(data[0])
         } catch (error) {
             return jsonParse(error.message, 500)
         }
@@ -142,10 +128,8 @@ class OrderService {
     async getParameter() {
         try {
             const query = (criteria) => {
-                let data = SubCriteria.findAll({
-                    where: {
-                        IdMasterCriteria: criteria
-                    }
+                let data = db('pp_subcriteria').where({
+                    IdMasterCriteria: criteria
                 })
                 return data
             }
@@ -158,6 +142,33 @@ class OrderService {
                 tenagaKerja: await query(6)
             }
             return jsonParse(data)
+        } catch (error) {
+            return jsonParse(error.message, 500)
+        }
+    }
+
+    async getDetail(IdOrder) {
+        try {
+            const data = {}
+
+            data.jenisKue = await db.from('pp_datacontent')
+                .innerJoin('pp_subcriteria', 'pp_datacontent.IdSubCriteria', 'pp_subcriteria.IdSubCriteria')
+                .where({ 
+                    'pp_datacontent.IdOrder': IdOrder,
+                    'pp_subcriteria.IdMasterCriteria': 1
+                })
+
+            data.dataContent = await db.from('pp_datacontent')
+                .innerJoin('pp_subcriteria', 'pp_datacontent.IdSubCriteria', 'pp_subcriteria.IdSubCriteria')
+                .whereNot('pp_subcriteria.IdMasterCriteria', 1)
+                .where('pp_datacontent.IdOrder', IdOrder)
+            
+            data.order = await db.from('pp_orders')
+                .innerJoin('pp_customers', 'pp_orders.IdCustomer', 'pp_customers.IdCustomer')
+                .where('pp_orders.IdOrder', IdOrder)
+
+            return jsonParse(data)
+
         } catch (error) {
             return jsonParse(error.message, 500)
         }

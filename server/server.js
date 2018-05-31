@@ -1,7 +1,8 @@
 const express       = require('express');
 const http          = require("http");
 const bodyParser    = require('body-parser');
-const Sequelize     = require('./App/Model')
+// const Sequelize     = require('./App/Model')
+const knex          = require('./db')
 const RouterModule  = require('./router-module')
 
 const app = express();

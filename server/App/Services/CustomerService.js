@@ -1,4 +1,4 @@
-const Customers = require('../Model/Customers')
+const db = require('../../db')
 const jsonParse = require('../Helper/json-parse')
 
 class CustomerService {
@@ -6,7 +6,7 @@ class CustomerService {
 
     async getAllCustomer() {
         try {
-            const data = await Customers.findAll();
+            const data = await db.select().from('pp_customers')
             return jsonParse(data)
         } catch (error) {
             return jsonParse(error.message, 500)
@@ -15,11 +15,7 @@ class CustomerService {
 
     async detailCustomer(IdCustomer) {
         try {
-            const data = await Customers.findOne({
-                where: {
-                    IdCustomer
-                }
-            })
+            const data = await db.select().from('pp_customers').where({ IdCustomer })
             return { result: data }
         } catch (error) {
             return jsonParse(error.message, 500)
@@ -29,15 +25,8 @@ class CustomerService {
     async editCustomer(param) {
         try {
             const { IdCustomer, CustomerName, PhoneNumber, Address } = param
-            const data = await Customers.update({
-                CustomerName,
-                PhoneNumber,
-                Address
-            }, {
-                where: {
-                    IdCustomer
-                }
-            })
+            const data = await db('pp_customers').where({ IdCustomer }).update({ CustomerName, PhoneNumber, Address })
+            
             return jsonParse("Data customer berhasil di ubah.")
         } catch (error) {
             return jsonParse(error.message, 500)
