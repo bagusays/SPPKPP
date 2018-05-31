@@ -33,21 +33,21 @@
 										<th scope="col" width="10%" class="align-middle">Kesulitan Bahan Pokok</th>
 										<th scope="col" width="5%" class="align-middle">Jarak Pengiriman</th>
 										<th scope="col" class="align-middle">Deadline</th>
-										<th scope="col" width="5%" class="align-middle">Tenaga Kerja</th>
+										<th scope="col" width="8%" class="align-middle">Tenaga Kerja</th>
 										<th scope="col" width="5%" class="align-middle">Total Kuantitas</th>
 										<th scope="col" class="align-middle">Action</th>
 									</tr>
 								</thead>
 								<tbody>
 									<tr v-for="data in listCustomers" :key="data.nama">
-										<td class="text-center">{{data.nama}}</td>
-										<td class="text-center">{{data.jenisKue}}</td>
-										<td class="text-center">{{data.kebawelanPelanggan}}</td>
-										<td class="text-center">{{data.kesulitanBahanPokok}}</td>
-										<td class="text-center">{{data.jarakPengiriman}}</td>
-										<td class="text-center">{{data.deadline}}</td>
-										<td class="text-center">{{data.tenagaKerja}}</td>
-										<td class="text-center">{{data.totalKuantitas}}</td>
+										<td class="text-center">{{data.CustomerName}}</td>
+										<td class="text-center">{{data.JenisKue}}</td>
+										<td class="text-center">{{data.KebawelanPelanggan}}</td>
+										<td class="text-center">{{data.KesulitanBahanPokok}}</td>
+										<td class="text-center">{{data.JarakPengiriman}}</td>
+										<td class="text-center">{{data.DeadlineDate | date}}</td>
+										<td class="text-center">{{data.TenagaKerja}}</td>
+										<td class="text-center">{{data.TotalQuantity}}</td>
 										<td class="text-center">
 											<button class="btn btn-sm button-action">
 												<i class="fa fa-fw fa-edit"> </i>
@@ -87,23 +87,23 @@
 										<th scope="col" width="10%" class="align-middle">Kesulitan Bahan Pokok</th>
 										<th scope="col" width="5%" class="align-middle">Jarak Pengiriman</th>
 										<th scope="col" class="align-middle">Deadline</th>
-										<th scope="col" width="5%" class="align-middle">Tenaga Kerja</th>
+										<th scope="col" width="8%" class="align-middle">Tenaga Kerja</th>
 										<th scope="col" width="5%" class="align-middle">Total Kuantitas</th>
-										<th scope="col" width="5%" class="align-middle">Skor</th>
+										<th scope="col" width="7%" class="align-middle">Skor</th>
 									</tr>
 								</thead>
 								<tbody>
 									<tr v-for="(data, index) in listCustomers" :key="data.nama">
 										<td class="text-center">{{index + 1}}</td>
-										<td class="text-center">{{data.nama}}</td>
-										<td class="text-center">{{data.jenisKue}}</td>
-										<td class="text-center">{{data.kebawelanPelanggan}}</td>
-										<td class="text-center">{{data.kesulitanBahanPokok}}</td>
-										<td class="text-center">{{data.jarakPengiriman}}</td>
-										<td class="text-center">{{data.deadline}}</td>
-										<td class="text-center">{{data.tenagaKerja}}</td>
-										<td class="text-center">{{data.totalKuantitas}} </td>
-										<td style="color: red; font-weight:bold;" class="text-center">0.9938</td>
+										<td class="text-center">{{data.CustomerName}}</td>
+										<td class="text-center">{{data.JenisKue}}</td>
+										<td class="text-center">{{data.KebawelanPelanggan}}</td>
+										<td class="text-center">{{data.KesulitanBahanPokok}}</td>
+										<td class="text-center">{{data.JarakPengiriman}}</td>
+										<td class="text-center">{{data.DeadlineDate | date}}</td>
+										<td class="text-center">{{data.TenagaKerja}}</td>
+										<td class="text-center">{{data.TotalQuantity}}</td>
+										<td style="color: red; font-weight:bold;" class="text-center">{{data.HasilPerhitunganPrioritas.toFixed(4)}}</td>
 									</tr>
 								</tbody>
 							</table>
@@ -117,6 +117,7 @@
 
 <script>
  import Chart from '../stuff/Chart'
+ import axios from 'axios'
  export default {
 	components: {
 		'Chart': Chart
@@ -129,58 +130,11 @@
 			isChartShow: false,
 			dataChart: null,
 			labels: null,
-			rawlistCustomers: [{
-					nama: 'Budi',
-					jenisKue: 'Nastar, Kastengel',
-					kebawelanPelanggan: 'Sedang',
-					kesulitanBahanPokok: 'Sedang',
-					jarakPengiriman: 'Sedang',
-					deadline: '10-Jun-2018',
-					tenagaKerja: '1',
-					totalKuantitas: '20'
-				},
-				{
-					nama: 'Joko',
-					jenisKue: 'Nastar, Putri Salju',
-					kebawelanPelanggan: 'Sedang',
-					kesulitanBahanPokok: 'Sedang',
-					jarakPengiriman: 'Sedang',
-					deadline: '10-Jun-2018',
-					tenagaKerja: '1',
-					totalKuantitas: '10'
-				},
-				{
-					nama: 'Anwar',
-					jenisKue: 'Nastar, Chocochips, Kastengel, Putri Salju',
-					kebawelanPelanggan: 'Sedang',
-					kesulitanBahanPokok: 'Sedang',
-					jarakPengiriman: 'Sedang',
-					deadline: '10-Jun-2018',
-					tenagaKerja: '1',
-					totalKuantitas: '30'
-				},
-				{
-					nama: 'Susi',
-					jenisKue: 'Nastar',
-					kebawelanPelanggan: 'Sedang',
-					kesulitanBahanPokok: 'Sedang',
-					jarakPengiriman: 'Sedang',
-					deadline: '10-Jun-2018',
-					tenagaKerja: '1',
-					totalKuantitas: '10'
-				},
-				{
-					nama: 'Adi',
-					jenisKue: 'Nastar, Kastengel, Sagu Keju',
-					kebawelanPelanggan: 'Sedang',
-					kesulitanBahanPokok: 'Sedang',
-					jarakPengiriman: 'Sedang',
-					deadline: '10-Jun-2018',
-					tenagaKerja: '1',
-					totalKuantitas: '30'
-				}
-			]
+			rawlistCustomers: []
 		}
+	},
+	created() {
+		this.getAllOrders()
 	},
 	computed: {
 		listCustomers: function() {
@@ -192,9 +146,19 @@
 		}
 	},
 	methods: {
+		async getAllOrders() {
+			const res = await axios.get(`${this.$basevar.baseUrl}/orders/getall`)
+			this.rawlistCustomers = res.data.result
+		},
 		kalkulasiPrioritas() {
-			this.dataChart = [40, 20, 12, 39, 10, 40];
-			this.labels = ['January', 'February', 'March', 'April', 'May', 'June'];
+			const fuzzy = this.rawlistCustomers.map(res => {
+				return res.HasilPerhitunganPrioritas
+			})
+			const nama = this.rawlistCustomers.map(res => {
+				return res.CustomerName
+			})
+			this.dataChart = fuzzy;
+			this.labels = nama;
 			this.isChartShow = true;
 			this.isLoading = false;
 			this.$helpers.toast.show("Operation Finished", "check")

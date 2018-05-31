@@ -4,6 +4,7 @@ import HelloWorld from '@/components/HelloWorld'
 
 import OrderList from '@/components/order/OrderList'
 import OrderTambah from '@/components/order/OrderTambah'
+import OrderEdit from '@/components/order/OrderEdit'
 
 import CustomerList from '@/components/customer/CustomerList'
 import CustomerTambah from '@/components/customer/CustomerTambah'
@@ -18,6 +19,7 @@ export default new Router({
 
         { path: '/orders', component: OrderList },
         { path: '/orders/tambah', component: OrderTambah },
+        { path: '/orders/edit', component: OrderEdit },
         
         { path: '/customers', component: CustomerList },
         { path: '/customers/tambah', component: CustomerTambah },

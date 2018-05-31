@@ -1,8 +1,5 @@
 const _ = require('lodash')
-
-// const Sequelize = require('../Model/Index')
 const db = require('../../db')
-
 const jsonParse = require('../Helper/json-parse')
 
 class OrderService {
@@ -22,7 +19,7 @@ class OrderService {
                 o.DeadlineDate as DeadlineDate,
                 MAX(CASE WHEN t.IdMasterCriteria = 5 THEN t.SubCriteria ELSE NULL END) AS IntervalDeadlineHari,
                 MAX(CASE WHEN t.IdMasterCriteria = 6 THEN t.SubCriteria ELSE NULL END) AS TenagaKerja,
-                MAX(CASE WHEN t.IdMasterCriteria = 7 THEN t.SubCriteria ELSE NULL END) AS KuantitasPesanan,
+                o.TotalQuantity,
                 t.HasilPerhitunganPrioritas
             FROM
                 (SELECT
@@ -158,14 +155,29 @@ class OrderService {
                     'pp_subcriteria.IdMasterCriteria': 1
                 })
 
-            data.dataContent = await db.from('pp_datacontent')
+            const dataContent = await db.from('pp_datacontent')
                 .innerJoin('pp_subcriteria', 'pp_datacontent.IdSubCriteria', 'pp_subcriteria.IdSubCriteria')
                 .whereNot('pp_subcriteria.IdMasterCriteria', 1)
                 .where('pp_datacontent.IdOrder', IdOrder)
             
+            data.dataContent = dataContent.map(res => {
+                let data = {}
+                switch(res.IdMasterCriteria) {
+                    case 2:
+                        data.kebawelanPelanggan = res
+                    case 3:
+                        data.kesulitanBahanPokok = res
+                    case 4:
+                        data.jarakPengiriman = res
+                    case 6:
+                        data.tenagaKerja = res
+                }
+                return data
+            })[0]
+            
             data.order = await db.from('pp_orders')
                 .innerJoin('pp_customers', 'pp_orders.IdCustomer', 'pp_customers.IdCustomer')
-                .where('pp_orders.IdOrder', IdOrder)
+                .where('pp_orders.IdOrder', IdOrder).first()
 
             return jsonParse(data)
 

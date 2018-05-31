@@ -6,6 +6,7 @@ import VueProgressBar from 'vue-progressbar'
 import Toasted from 'vue-toasted';
 import BootstrapVue from 'bootstrap-vue'
 import VeeValidate from 'vee-validate';
+import moment from 'moment'
 
 import { Navbar } from 'bootstrap-vue/es/components';
 
@@ -32,6 +33,12 @@ Vue.use(Navbar);
 Vue.use(VeeValidate);
 
 Vue.component('required-tag', RequiredTag)
+
+Vue.filter('date', function(value) {
+  if (value) {
+    return moment(String(value)).format('DD-MMMM-YYYY')
+  }
+})
 
 
 Vue.config.productionTip = false
