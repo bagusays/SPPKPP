@@ -19,7 +19,7 @@ export default new Router({
 
         { path: '/orders', component: OrderList },
         { path: '/orders/tambah', component: OrderTambah },
-        { path: '/orders/edit', component: OrderEdit },
+        { path: '/orders/edit/:id', component: OrderEdit },
         
         { path: '/customers', component: CustomerList },
         { path: '/customers/tambah', component: CustomerTambah },

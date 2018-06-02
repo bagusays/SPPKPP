@@ -35,12 +35,11 @@
                                     <td class="text-center">{{data.PhoneNumber}}</td>
                                     <td class="text-center" v-bind:style="[data.Address == '-' ? {'color': 'red'} : {}]">{{ data.Address }}</td>
                                     <td class="text-center">
-                                                <router-link :to="'/customers/edit/' + data.IdCustomer">
-                                        
+                                        <router-link :to="'/customers/edit/' + data.IdCustomer">
                                             <button class="btn btn-sm button-action">
                                                 <i class="fa fa-fw fa-edit"></i>
                                             </button>
-                                                </router-link>
+                                        </router-link>
                                         
                                         <button class="btn btn-sm button-action">
                                             <i class="fa fa-fw fa-trash"> </i>

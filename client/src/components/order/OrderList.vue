@@ -49,9 +49,11 @@
 										<td class="text-center">{{data.TenagaKerja}}</td>
 										<td class="text-center">{{data.TotalQuantity}}</td>
 										<td class="text-center">
-											<button class="btn btn-sm button-action">
-												<i class="fa fa-fw fa-edit"> </i>
-											</button>
+											<router-link :to="'/orders/edit/' + data.IdOrder">
+                                            <button class="btn btn-sm button-action">
+                                                <i class="fa fa-fw fa-edit"></i>
+                                            </button>
+                                        </router-link>
 											<button class="btn btn-sm button-action">
 												<i class="fa fa-fw fa-trash"> </i>
 											</button>
@@ -149,16 +151,15 @@
 		async getAllOrders() {
 			const res = await axios.get(`${this.$basevar.baseUrl}/orders/getall`)
 			this.rawlistCustomers = res.data.result
+			console.log(this.rawlistCustomers)
 		},
 		kalkulasiPrioritas() {
-			const fuzzy = this.rawlistCustomers.map(res => {
+			this.dataChart = this.rawlistCustomers.map(res => {
 				return res.HasilPerhitunganPrioritas
 			})
-			const nama = this.rawlistCustomers.map(res => {
+			this.labels = this.rawlistCustomers.map(res => {
 				return res.CustomerName
 			})
-			this.dataChart = fuzzy;
-			this.labels = nama;
 			this.isChartShow = true;
 			this.isLoading = false;
 			this.$helpers.toast.show("Operation Finished", "check")

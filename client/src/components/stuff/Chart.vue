@@ -16,7 +16,7 @@ export default {
         labels: this.labels,
         datasets: [
             {
-                label: 'Pemesan',
+                label: 'Hasil Perhitungan',
                 backgroundColor: this.color.map(res => res),
                 data: this.data
             }]

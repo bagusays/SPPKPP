@@ -15,7 +15,7 @@ class CustomerService {
 
     async detailCustomer(IdCustomer) {
         try {
-            const data = await db.select().from('pp_customers').where({ IdCustomer })
+            const data = await db.select().from('pp_customers').where({ IdCustomer }).first()
             return { result: data }
         } catch (error) {
             return jsonParse(error.message, 500)
@@ -26,7 +26,7 @@ class CustomerService {
         try {
             const { IdCustomer, CustomerName, PhoneNumber, Address } = param
             const data = await db('pp_customers').where({ IdCustomer }).update({ CustomerName, PhoneNumber, Address })
-            
+
             return jsonParse("Data customer berhasil di ubah.")
         } catch (error) {
             return jsonParse(error.message, 500)

@@ -12,8 +12,13 @@ app.get("/orders/parameter", async function(req, res) {
     res.status(data.status || 200).json(data)
 })
 
-app.post("/orders/getDetail", async function(req, res) {
+app.post("/orders/detail", async function(req, res) {
     const data = await service.getDetail(req.body.IdOrder);
+    res.status(data.status || 200).json(data)
+})
+
+app.post("/orders/edit", async function(req, res) {
+    const data = await service.updateOrder(req.body);
     res.status(data.status || 200).json(data)
 })
 
