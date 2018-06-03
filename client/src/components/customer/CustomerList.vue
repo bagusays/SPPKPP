@@ -41,7 +41,7 @@
                                             </button>
                                         </router-link>
                                         
-                                        <button class="btn btn-sm button-action">
+                                        <button @click="onDelete(data.IdCustomer)" class="btn btn-sm button-action">
                                             <i class="fa fa-fw fa-trash"> </i>
                                         </button>
                                     </td>
@@ -83,6 +83,18 @@ export default {
         async getCustomers() {
             const result = await axios.get(`${this.$basevar.baseUrl}/customers/list`);
             this.rawListCustomers = result.data.result;
+        },
+        async onDelete(IdCustomer) {
+            const confirm = await this.$helpers.alert.delete()
+            if (!confirm.value)
+                return false
+
+            const res = await axios.post(`${this.$basevar.baseUrl}/customers/delete`, {IdCustomer})
+            if(res.status == 200) {
+                await this.$helpers.alert.success(res.data.message)
+                this.getCustomers()
+            } else
+                this.$helpers.alert.error(res.data.message)
         }
     }
 }

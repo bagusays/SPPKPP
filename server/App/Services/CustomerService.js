@@ -7,18 +7,20 @@ class CustomerService {
     async getAllCustomer() {
         try {
             const data = await db.select().from('pp_customers')
-            return jsonParse(data)
+
+            return jsonParse({ result: data})
         } catch (error) {
-            return jsonParse(error.message, 500)
+            return jsonParse({ status: 500, message: error.message })
         }
     }
 
     async detailCustomer(IdCustomer) {
         try {
             const data = await db.select().from('pp_customers').where({ IdCustomer }).first()
-            return { result: data }
+
+            return jsonParse({ result: data})
         } catch (error) {
-            return jsonParse(error.message, 500)
+            return jsonParse({ status: 500, message: error.message })
         }
     }
 
@@ -27,9 +29,34 @@ class CustomerService {
             const { IdCustomer, CustomerName, PhoneNumber, Address } = param
             const data = await db('pp_customers').where({ IdCustomer }).update({ CustomerName, PhoneNumber, Address })
 
-            return jsonParse("Data customer berhasil di ubah.")
+            return jsonParse({message: "Data customer berhasil di ubah."})
         } catch (error) {
-            return jsonParse(error.message, 500)
+            return jsonParse({ status: 500, message: error.message })
+        }
+    }
+
+    async addCustomer(param) {
+        try {
+            const { CustomerName, PhoneNumber, Address } = param
+            const query = await db('pp_customers').insert({
+                CustomerName,
+                PhoneNumber,
+                Address
+            })
+
+            return jsonParse({message: "Data customer berhasil ditambah."})
+        } catch (error) {
+            return jsonParse({ status: 500, message: error.message })
+        }
+    }
+
+    async deleteCustomer(IdCustomer) {
+        try {
+            const data = await db('pp_customers').where({IdCustomer}).del();
+
+            return jsonParse({message: "Data customer berhasil di hapus." })
+        } catch (error) {
+            return jsonParse({ status: 500, message: error.message })
         }
     }
 }

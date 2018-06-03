@@ -1,5 +1,10 @@
-function json(result, status) {
-    return { status: status || 200, result: result }
+function json(param) {
+    const { status, message, result } = param
+    return { 
+        message,
+        status: status || 200, 
+        result
+    }
 }
 
 module.exports = json;

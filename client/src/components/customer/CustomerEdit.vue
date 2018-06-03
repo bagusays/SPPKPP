@@ -85,12 +85,12 @@ export default {
                     Address: this.Address
                 }
                 let res = await axios.post(`${this.$basevar.baseUrl}/customers/edit`, param)
-                console.log(res.data)
-                this.$helpers.toast.show(res.data.result, "check")
-                this.$router.push({ path: '/customers' })
+                if(res.status == 200) {
+                    await this.$helpers.alert.success(res.data.message)
+                    this.$router.push({ path: '/customers' })
+                } else
+                    await this.$helpers.alert.error(res.data.message)
             }
-            else
-                alert('ga lolos')
         }
     }
 }
