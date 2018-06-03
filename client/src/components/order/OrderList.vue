@@ -50,11 +50,11 @@
 										<td class="text-center">{{data.TotalQuantity}}</td>
 										<td class="text-center">
 											<router-link :to="'/orders/edit/' + data.IdOrder">
-                                            <button class="btn btn-sm button-action">
-                                                <i class="fa fa-fw fa-edit"></i>
-                                            </button>
-                                        </router-link>
-											<button class="btn btn-sm button-action">
+												<button class="btn btn-sm button-action">
+													<i class="fa fa-fw fa-edit"></i>
+												</button>
+											</router-link>
+											<button @click="onDelete(data.IdOrder)" class="btn btn-sm button-action">
 												<i class="fa fa-fw fa-trash"> </i>
 											</button>
 										</td>
@@ -151,15 +151,22 @@
 		async getAllOrders() {
 			const res = await axios.get(`${this.$basevar.baseUrl}/orders/getall`)
 			this.rawlistCustomers = res.data.result
-			console.log(this.rawlistCustomers)
+		},
+		async onDelete(IdOrder) {
+			const confirm = await this.$helpers.alert.delete()
+            if (!confirm.value)
+                return false
+
+            const res = await axios.post(`${this.$basevar.baseUrl}/orders/delete`, {IdOrder})
+            if(res.status == 200) {
+                await this.$helpers.alert.success(res.data.message)
+                this.getAllOrders()
+            } else
+                this.$helpers.alert.error(res.data.message)
 		},
 		kalkulasiPrioritas() {
-			this.dataChart = this.rawlistCustomers.map(res => {
-				return res.HasilPerhitunganPrioritas
-			})
-			this.labels = this.rawlistCustomers.map(res => {
-				return res.CustomerName
-			})
+			this.dataChart = this.rawlistCustomers.map(res => res.HasilPerhitunganPrioritas)
+			this.labels = this.rawlistCustomers.map(res => res.CustomerName)
 			this.isChartShow = true;
 			this.isLoading = false;
 			this.$helpers.toast.show("Operation Finished", "check")

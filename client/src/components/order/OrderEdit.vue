@@ -15,7 +15,7 @@
                 <div class="form-group row">
                     <label class="col-md-2 col-form-label">Nama<required-tag></required-tag></label>
                     <div class="col-md-4">
-                        <vue-multiselect v-model="form.Nama" v-bind:options="namaOptions" v-bind:hide-selected="true" v-bind:preserve-search="true" placeholder="Cari customer" label="CustomerName"
+                        <vue-multiselect v-model="form.Nama" v-bind:options="namaOptions" v-bind:preserve-search="true" placeholder="Cari customer" label="CustomerName"
                             track-by="CustomerName" v-bind:preselect-first="false" name="nama" v-bind:class="errors.has('nama') ? 'is-invalid' : ''" v-validate="'required'" required></vue-multiselect>
                         <p v-show="errors.has('nama')" class="invalid-form">{{ errors.first('nama') }}</p>
                     </div>
@@ -186,8 +186,11 @@ export default {
             this.form.DeadlineDate = moment(this.form.DeadlineDate, 'YYYY-MM-DD').format('YYYY/MM/DD')
             console.log(this.form.DeadlineDate + ' setelah')
             const result = await axios.post(`${this.$basevar.baseUrl}/orders/edit`, this.form)
-            this.$helpers.toast.show(result.data.result, "check")
-            this.$router.push({ path: '/orders' })
+            if(result.status == 200) {
+                await this.$helpers.alert.success(result.data.message)
+                this.$router.push({ path: '/orders' })
+            } else
+                this.$helpers.alert.error(result.data.message)
         }
     }
 }

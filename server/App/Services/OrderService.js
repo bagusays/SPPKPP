@@ -119,9 +119,9 @@ class OrderService {
     async getAllOrders() {
         try {
             const data = await db.raw(this.QUERY_GET_ALL_ORDERS)
-            return jsonParse(data[0])
+            return jsonParse({result: data[0]})
         } catch (error) {
-            return jsonParse(error.message, 500)
+            return jsonParse({ message: error.message, status: 500 })
         }
     }
 
@@ -142,9 +142,9 @@ class OrderService {
                 jarakPengiriman: await query(4),
                 tenagaKerja: await query(6)
             }
-            return jsonParse(data)
+            return jsonParse({result: data})
         } catch (error) {
-            return jsonParse(error.message, 500)
+            return jsonParse({ message: error.message, status: 500 })
         }
     }
 
@@ -180,10 +180,60 @@ class OrderService {
                     data.tenagaKerja = res
             })
 
-            return jsonParse(data)
+            return jsonParse({result: data})
 
         } catch (error) {
-            return jsonParse(error.message, 500)
+            return jsonParse({ message: error.message, status: 500 })
+        }
+    }
+
+    async addOrder(param) {
+        try {
+            const { Nama, JenisKue, KebawelanPelanggan, KesulitanBahanPokok, JarakPengiriman, DeadlineDate, TenagaKerja, TotalQuantity } = param
+            const addOrder = await db('pp_orders')
+                .returning('IdOrder')
+                .insert({
+                    IdCustomer: Nama.IdCustomer,
+                    TotalQuantity,
+                    DeadlineDate
+                })
+
+            const query = async (IdMasterCriteria, IdSubCriteria) => {
+                const data = await db('pp_datacontent').insert({
+                    IdOrder: addOrder[0],
+                    IdMasterCriteria,
+                    IdSubCriteria
+                })
+
+                return data
+            }
+
+            var qty = await this.checkQuantity(TotalQuantity)
+
+            for(let data of JenisKue) {
+                await query(1, data.IdSubCriteria)
+            }
+
+            await query(2, KebawelanPelanggan)
+            await query(3, KesulitanBahanPokok)
+            await query(4, JarakPengiriman)
+            await query(6, TenagaKerja)
+            await query(7, qty)
+
+            return jsonParse({message: "Data order berhasil di tambah."})
+        } catch (error) {
+            return jsonParse({ message: error.message, status: 500 })
+        }
+    }
+
+    async deleteOrder(IdOrder) {
+        try {
+            const queryDataContent = await db('pp_datacontent').where({IdOrder}).del()
+            const queryOrders = await db('pp_orders').where({IdOrder}).del()
+
+            return jsonParse({message: "Data order berhasil di hapus."})
+        } catch (error) {
+            return jsonParse({ message: error.message, status: 500 })
         }
     }
 
@@ -195,8 +245,6 @@ class OrderService {
                 TotalQuantity: TotalQuantity,
                 DeadlineDate: DeadlineDate
             })
-
-            
 
             const updateContent = (IdMasterCriteria, IdSubCriteria) => {
                 const data = db('pp_datacontent').where({
@@ -214,13 +262,12 @@ class OrderService {
             await updateContent(2, KebawelanPelanggan)
             await updateContent(3, KesulitanBahanPokok)
             await updateContent(4, JarakPengiriman)
-            await updateContent(4, JarakPengiriman)
             await updateContent(6, TenagaKerja)
             await updateContent(7, qty)
 
-            return jsonParse("Data order berhasil di ubah.")
+            return jsonParse({message: "Data order berhasil di ubah."})
         } catch (error) {
-            return jsonParse(error.message, 500)
+            return jsonParse({ message: error.message, status: 500 })
         }
     }
 
