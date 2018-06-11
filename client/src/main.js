@@ -8,6 +8,8 @@ import BootstrapVue from 'bootstrap-vue'
 import VeeValidate from 'vee-validate';
 import moment from 'moment'
 import VueSweetalert2 from 'vue-sweetalert2';
+import Vuex from 'vuex'
+import store from './store'
 
 import { Navbar } from 'bootstrap-vue/es/components';
 
@@ -31,6 +33,7 @@ Vue.use(constants)
 Vue.use(Navbar);
 Vue.use(VeeValidate);
 Vue.use(VueSweetalert2);
+Vue.use(Vuex)
 
 Vue.component('required-tag', RequiredTag)
 
@@ -47,6 +50,7 @@ Vue.config.productionTip = false
 new Vue({
   el: '#app',
   router,
+  store,
   components: { App },
   template: '<App/>'
 })

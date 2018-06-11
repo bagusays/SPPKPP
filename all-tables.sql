@@ -44,7 +44,7 @@ CREATE TABLE `pp_customers` (
   `CustomerName` varchar(50) NOT NULL,
   `PhoneNumber` varchar(15) NOT NULL,
   `Address` varchar(90) NOT NULL DEFAULT '-'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `pp_customers`
@@ -127,7 +127,7 @@ CREATE TABLE `pp_deadlinecriteria` (
   `IdMasterCriteria` int(11) NOT NULL,
   `CriteriaName` varchar(20) NOT NULL,
   `CriteriaValue` double(4,2) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `pp_deadlinecriteria`
@@ -174,7 +174,7 @@ CREATE TABLE `pp_fuzzyjeniskuecriteria` (
   `IdFuzzy` int(11) NOT NULL,
   `CriteriaName` varchar(10) NOT NULL,
   `CriteriaValue` double(4,2) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `pp_fuzzyjeniskuecriteria`
