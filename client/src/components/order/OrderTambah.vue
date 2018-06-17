@@ -37,7 +37,7 @@
                             <label class="col-md-2 col-form-label">Kebawelan Pelanggan<required-tag></required-tag></label>
                             <div class="col-md-4">
                                 <select class="custom-select" v-model="form.KebawelanPelanggan" :class="errors.has('nama') ? 'is-invalid' : ''" name="kebawelanPelanggan" v-validate="{required: true, not_in: ''}">
-                                    <option v-for="item in kebawelanPelangganOptions" :key="item.CriteriaName" :value="item.IdSubCriteria">{{item.CriteriaName}}</option>
+                                    <option v-for="item in kebawelanPelangganOptions" :key="item.CriteriaName" :value="item.Id">{{item.CriteriaName}}</option>
                                 </select>
                                 <p v-show="errors.has('kebawelanPelanggan')" class="invalid-form">{{ errors.first('kebawelanPelanggan') }}</p>
                             </div>
@@ -46,7 +46,7 @@
                             <label class="col-md-2 col-form-label">Kesulitan Bahan Pokok<required-tag></required-tag></label>
                             <div class="col-md-4">
                                 <select class="custom-select" v-model="form.KesulitanBahanPokok" :class="errors.has('nama') ? 'is-invalid' : ''" name="kesulitanBahanPokok" v-validate="{required: true, not_in: ''}">
-                                    <option v-for="item in kesulitanBahanPokokOptions" :key="item.CriteriaName" :value="item.IdSubCriteria">{{item.CriteriaName}}</option>
+                                    <option v-for="item in kesulitanBahanPokokOptions" :key="item.CriteriaName" :value="item.Id">{{item.CriteriaName}}</option>
                                 </select>
                                 <p v-show="errors.has('kesulitanBahanPokok')" class="invalid-form">{{ errors.first('kesulitanBahanPokok') }}</p>
                             </div>
@@ -55,7 +55,7 @@
                             <label class="col-md-2 col-form-label">Jarak Pengiriman<required-tag></required-tag></label>
                             <div class="col-md-4">
                                 <select class="custom-select" v-model="form.JarakPengiriman" :class="errors.has('nama') ? 'is-invalid' : ''" name="jarakPengiriman" v-validate="{required: true, not_in: ''}">
-                                    <option v-for="item in jarakPengirimanOptions" :key="item.CriteriaName" :value="item.IdSubCriteria" required>{{item.CriteriaName}}</option>
+                                    <option v-for="item in jarakPengirimanOptions" :key="item.CriteriaName" :value="item.Id" required>{{item.CriteriaName}}</option>
                                 </select>
                                 <p v-show="errors.has('jarakPengiriman')" class="invalid-form">{{ errors.first('jarakPengiriman') }}</p>
                             </div>
@@ -80,7 +80,7 @@
                             <label class="col-md-2 col-form-label">Tenaga Kerja<required-tag></required-tag></label>
                             <div class="col-md-4">
                                 <select class="custom-select" v-model="form.TenagaKerja" :class="errors.has('nama') ? 'is-invalid' : ''" name="tenagaKerja" v-validate="{required: true, not_in: ''}">
-                                <option v-for="item in tenagaKerjaOptions" :key="item.CriteriaName" :value="item.IdSubCriteria">{{item.CriteriaName}}</option>
+                                <option v-for="item in tenagaKerjaOptions" :key="item.CriteriaName" :value="item.Id">{{item.CriteriaName}}</option>
                             </select>
                             <p v-show="errors.has('tenagaKerja')" class="invalid-form">{{ errors.first('tenagaKerja') }}</p>
                             </div>

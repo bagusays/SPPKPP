@@ -42,7 +42,7 @@
 										</tr>
 									</thead>
 									<tbody>
-										<tr v-for="data in listCustomers" :key="data.nama">
+										<tr v-for="data in listCustomers" :key="data.Id">
 											<td class="text-center">{{data.CustomerName}}</td>
 											<td class="text-center">{{data.JenisKue}}</td>
 											<td class="text-center">{{data.KebawelanPelanggan}}</td>
@@ -98,7 +98,7 @@
 										</tr>
 									</thead>
 									<tbody>
-										<tr v-for="(data, index) in listCustomers" :key="data.nama">
+										<tr v-for="(data, index) in listCustomers" :key="data.Id">
 											<td class="text-center">{{index + 1}}</td>
 											<td class="text-center">{{data.CustomerName}}</td>
 											<td class="text-center">{{data.JenisKue}}</td>
@@ -155,10 +155,12 @@
 		}
 	},
 	methods: {
+
 		async getAllOrders() {
 			const res = await this.$helpers.axiosAuth.get('/orders/getall')
 			this.rawlistCustomers = res.data.result
 		},
+
 		async onDelete(IdOrder) {
 			const confirm = await this.$helpers.alert.delete()
             if (!confirm.value)
@@ -171,6 +173,7 @@
             } else
                 this.$helpers.alert.error(res.data.message)
 		},
+		
 		kalkulasiPrioritas() {
 			this.dataChart = this.rawlistCustomers.map(res => res.HasilPerhitunganPrioritas)
 			this.labels = this.rawlistCustomers.map(res => res.CustomerName)

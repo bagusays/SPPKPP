@@ -3,7 +3,7 @@ const passport = require('passport')
 const OrderService = require('../Services/OrderService')
 const service = new OrderService();
 
-app.get('/orders/getall', passport.authenticate('bearer', { session: false }), async function(req, res) {
+app.get('/orders/getall', async function(req, res) {
     const data = await service.getAllOrders();
     res.status(data.status || 200).json(data)
 })

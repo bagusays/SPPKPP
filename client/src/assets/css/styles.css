@@ -63,8 +63,10 @@ body {
     height: calc(107vh - 112px);
 }
 
-.active {
+.link-active {
     font-weight: bold;
+    /* color: whitesmoke; */
+    background-color: rgba(0, 0, 0, 0.26); 
 }
 
 .material-icons {
@@ -189,4 +191,12 @@ th {
     color: red;
     margin-top: 7px;
     margin-bottom: 0px;
+}
+
+.sidebar-children {
+    font-size: 12px;
+    margin-top: 10px !important;
+    margin-left: 20px !important;
+    padding: 0px;
+    margin: 0px;
 }

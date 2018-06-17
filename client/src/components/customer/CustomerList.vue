@@ -33,18 +33,18 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr v-for="data in listCustomers" :key="data.IdCustomer">
+                                        <tr v-for="data in listCustomers" :key="data.Id">
                                             <td class="text-center">{{data.CustomerName}}</td>
                                             <td class="text-center">{{data.PhoneNumber}}</td>
                                             <td class="text-center" v-bind:style="[data.Address == '-' ? {'color': 'red'} : {}]">{{ data.Address }}</td>
                                             <td class="text-center">
-                                                <router-link :to="'/customers/edit/' + data.IdCustomer">
+                                                <router-link :to="'/customers/edit/' + data.Id">
                                                     <button class="btn btn-sm button-action">
                                                         <i class="fa fa-fw fa-edit"></i>
                                                     </button>
                                                 </router-link>
                                                 
-                                                <button @click="onDelete(data.IdCustomer)" class="btn btn-sm button-action">
+                                                <button @click="onDelete(data.Id)" class="btn btn-sm button-action">
                                                     <i class="fa fa-fw fa-trash"> </i>
                                                 </button>
                                             </td>
@@ -92,6 +92,7 @@ export default {
             const result = await this.$helpers.axiosAuth.get(`/customers/list`);
             this.rawListCustomers = result.data.result;
         },
+
         async onDelete(IdCustomer) {
             const confirm = await this.$helpers.alert.delete()
             if (!confirm.value)

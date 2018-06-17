@@ -26,7 +26,7 @@ class OrderService {
         FROM
             (SELECT
                 t.*,
-                SUM(t.Fuzzy) over(partition by t.idorder) AS HasilPerhitunganPrioritas
+                SUM(t.Fuzzy) over(partition by t.IdOrder) AS HasilPerhitunganPrioritas
             FROM
                 (SELECT
                     t.*,
@@ -37,20 +37,20 @@ class OrderService {
                         ROUND(t.CriteriaValue/MAX(t.CriteriaValue) over(PARTITION BY t.IdMasterCriteria), 4) AS HasilNormalisasi
                     FROM
                         (SELECT
-                            o.IdOrder,
-                            c.IdCustomer,
+                            o.Id as IdOrder,
+                            c.Id as IdCustomer,
                             c.CustomerName,
-                            mc.IdMasterCriteria,
+                            mc.Id as IdMasterCriteria,
                             mc.CriteriaValue AS MasterCriteriaValue,
                             mc.CriteriaName AS MasterCriteria,
                             sc.CriteriaName AS SubCriteria,
                             sc.CriteriaValue
                         FROM pp_datacontent dc
-                        INNER JOIN pp_subcriteria sc ON sc.IdSubCriteria = dc.IdSubCriteria
-                        INNER JOIN pp_mastercriteria mc ON mc.IdMasterCriteria = dc.IdMasterCriteria
-                        INNER JOIN pp_orders o ON o.IdOrder = dc.IdOrder
-                        INNER JOIN pp_customers c ON c.IdCustomer = o.IdCustomer
-                        WHERE mc.IdMasterCriteria <> 1
+                        INNER JOIN pp_subcriteria sc ON sc.Id = dc.IdSubCriteria
+                        INNER JOIN pp_mastercriteria mc ON mc.Id = dc.IdMasterCriteria
+                        INNER JOIN pp_orders o ON o.Id = dc.IdOrder
+                        INNER JOIN pp_customers c ON c.Id = o.Id
+                        WHERE mc.Id <> 1
                         UNION ALL
                         SELECT
                             t.IdOrder,
@@ -63,54 +63,54 @@ class OrderService {
                             fz.CriteriaValue
                         FROM
                             (SELECT
-                                o.IdOrder,
-                                c.IdCustomer,
+                                o.Id as IdOrder,
+                                c.Id as IdCustomer,
                                 c.CustomerName,
-                                mc.IdMasterCriteria,
+                                mc.Id as IdMasterCriteria,
                                 mc.CriteriaValue AS MasterCriteriaValue,
                                 mc.CriteriaName AS MasterCriteria,
-                                CASE WHEN mc.IdMasterCriteria = 1 THEN
+                                CASE WHEN mc.Id = 1 THEN
                                     GROUP_CONCAT(IF(mc.CriteriaName = 'Jenis Kue', sc.CriteriaName, NULL) SEPARATOR ', ') 
                                 END AS SubCriteria,
                                 ROUND(SUM(IF(mc.CriteriaName = 'Jenis Kue', sc.CriteriaValue, NULL)), 0) AS TotalBobotJenisKue
                             FROM pp_datacontent dc
-                            INNER JOIN pp_subcriteria sc ON sc.IdSubCriteria = dc.IdSubCriteria
-                            INNER JOIN pp_mastercriteria mc ON mc.IdMasterCriteria = dc.IdMasterCriteria
-                            INNER JOIN pp_orders o ON o.IdOrder = dc.IdOrder
-                            INNER JOIN pp_customers c ON c.IdCustomer = o.IdCustomer
-                            WHERE mc.IdMasterCriteria = 1
-                            GROUP BY mc.CriteriaName, o.IdOrder
+                        INNER JOIN pp_subcriteria sc ON sc.Id = dc.IdSubCriteria
+                        INNER JOIN pp_mastercriteria mc ON mc.Id = dc.IdMasterCriteria
+                        INNER JOIN pp_orders o ON o.Id = dc.IdOrder
+                        INNER JOIN pp_customers c ON c.Id = o.Id
+                            WHERE mc.Id = 1
+                            GROUP BY mc.CriteriaName, o.Id
                             ) t
-                        INNER JOIN pp_fuzzyjeniskuecriteria fz ON fz.IdFuzzy = t.TotalBobotJenisKue
+                        INNER JOIN pp_fuzzyjeniskuecriteria fz ON fz.Id = t.TotalBobotJenisKue
                         UNION ALL
                         SELECT
                             t.IdOrder,
                             t.IdCustomer,
                             t.CustomerName,
-                            mc.IdMasterCriteria,
+                            mc.Id as IdMasterCriteria,
                             mc.CriteriaValue AS MasterCriteriaValue,
                             mc.CriteriaName AS MasterCriteria,
                             dc.CriteriaName AS SubCriteria,
                             dc.CriteriaValue AS CriteriaValue
                         FROM
                             (SELECT
-                                o.IdOrder,
-                                c.IdCustomer,
+                                o.Id as IdOrder,
+                                c.Id as IdCustomer,
                                 c.CustomerName,
                                 DATEDIFF(o.DeadlineDate, NOW()) AS IntervalDate
                             FROM pp_orders o
-                            INNER JOIN pp_customers c ON c.IdCustomer = o.IdCustomer
+                            INNER JOIN pp_customers c ON c.Id = o.Id
                             ) t
-                        INNER JOIN pp_deadlinecriteria dc ON dc.IdDeadlineCriteria = t.IntervalDate
-                        INNER JOIN pp_mastercriteria mc ON mc.IdMasterCriteria = dc.IdMasterCriteria
+                        INNER JOIN pp_deadlinecriteria dc ON dc.Id = t.IntervalDate
+                        INNER JOIN pp_mastercriteria mc ON mc.Id = dc.IdMasterCriteria
                         ) t
                     ORDER BY t.IdOrder, t.IdMasterCriteria
                     ) t
                 ) t
             ) t
-        INNER JOIN pp_customers c ON c.IdCustomer = t.IdCustomer
-        INNER JOIN pp_orders o ON o.IdOrder = t.idorder
-        GROUP BY t.idorder
+        INNER JOIN pp_customers c ON c.Id = t.IdCustomer
+        INNER JOIN pp_orders o ON o.Id = t.IdOrder
+        GROUP BY t.IdOrder
         ORDER BY t.HasilPerhitunganPrioritas desc
         `
 
@@ -153,18 +153,18 @@ class OrderService {
             const data = {}
 
             data.nama = await db.from('pp_orders')
-                .innerJoin('pp_customers', 'pp_orders.IdCustomer', 'pp_customers.IdCustomer')
-                .where('pp_orders.IdOrder', IdOrder).first()
+                .innerJoin('pp_customers', 'pp_orders.IdCustomer', 'pp_customers.Id')
+                .where('pp_orders.Id', IdOrder).first()
 
             data.jenisKue = await db.from('pp_datacontent')
-                .innerJoin('pp_subcriteria', 'pp_datacontent.IdSubCriteria', 'pp_subcriteria.IdSubCriteria')
+                .innerJoin('pp_subcriteria', 'pp_datacontent.IdSubCriteria', 'pp_subcriteria.Id')
                 .where({ 
                     'pp_datacontent.IdOrder': IdOrder,
                     'pp_subcriteria.IdMasterCriteria': 1
                 })
                 
             const dataContent = await db.from('pp_datacontent')
-                .innerJoin('pp_subcriteria', 'pp_datacontent.IdSubCriteria', 'pp_subcriteria.IdSubCriteria')
+                .innerJoin('pp_subcriteria', 'pp_datacontent.IdSubCriteria', 'pp_subcriteria.Id')
                 .whereNot('pp_subcriteria.IdMasterCriteria', 1)
                 .where('pp_datacontent.IdOrder', IdOrder)
 
@@ -229,7 +229,7 @@ class OrderService {
     async deleteOrder(IdOrder) {
         try {
             const queryDataContent = await db('pp_datacontent').where({IdOrder}).del()
-            const queryOrders = await db('pp_orders').where({IdOrder}).del()
+            const queryOrders = await db('pp_orders').where({Id: IdOrder}).del()
 
             return jsonParse({message: "Data order berhasil di hapus."})
         } catch (error) {
@@ -240,7 +240,7 @@ class OrderService {
     async updateOrder(param) {
         try {
             const { IdOrder, Nama, JenisKue, TotalQuantity, DeadlineDate, KebawelanPelanggan, KesulitanBahanPokok, JarakPengiriman, TenagaKerja } = param
-            const order = await db('pp_orders').where({IdOrder}).update({
+            const order = await db('pp_orders').where({Id: IdOrder}).update({
                 IdCustomer: Nama.IdCustomer,
                 TotalQuantity: TotalQuantity,
                 DeadlineDate: DeadlineDate
@@ -278,10 +278,10 @@ class OrderService {
             let dataDb = jenisKue.map(res => res.IdSubCriteria)
             let check = dataDb.includes(dataParam.IdSubCriteria)
             if(!check) {
-                console.log(dataParam.IdSubCriteria + ' baru nih')
+                console.log(dataParam.Id + ' baru nih')
                 let x = await db('pp_datacontent').insert({
                     IdMasterCriteria: 1,
-                    IdSubCriteria: dataParam.IdSubCriteria,
+                    IdSubCriteria: dataParam.Id,
                     IdOrder
                 })
             }
@@ -308,16 +308,12 @@ class OrderService {
         data.find(res => {
             let data = res.CriteriaName.split('-')
             const range = _.inRange(TotalQuantity, data[0], data[1])
-            if(range == true) {
-                result = res.IdSubCriteria
-                console.log(result)
-            }
+            if(range == true)
+                result = res.Id
         })
 
-        if(result == null) {
-            console.log(data[0].IdSubCriteria)
+        if(result == null)
             result = data[0].IdSubCriteria
-        }
 
         return result
     }

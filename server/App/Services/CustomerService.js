@@ -16,7 +16,7 @@ class CustomerService {
 
     async detailCustomer(IdCustomer) {
         try {
-            const data = await db.select().from('pp_customers').where({ IdCustomer }).first()
+            const data = await db.select().from('pp_customers').where({ Id: IdCustomer }).first()
 
             return jsonParse({ result: data})
         } catch (error) {
@@ -27,7 +27,7 @@ class CustomerService {
     async editCustomer(param) {
         try {
             const { IdCustomer, CustomerName, PhoneNumber, Address } = param
-            const data = await db('pp_customers').where({ IdCustomer }).update({ CustomerName, PhoneNumber, Address })
+            const data = await db('pp_customers').where({ Id: IdCustomer }).update({ CustomerName, PhoneNumber, Address })
 
             return jsonParse({message: "Data customer berhasil di ubah."})
         } catch (error) {
@@ -52,7 +52,7 @@ class CustomerService {
 
     async deleteCustomer(IdCustomer) {
         try {
-            const data = await db('pp_customers').where({IdCustomer}).del();
+            const data = await db('pp_customers').where({Id: IdCustomer}).del();
 
             return jsonParse({message: "Data customer berhasil di hapus." })
         } catch (error) {
