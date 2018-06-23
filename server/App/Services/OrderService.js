@@ -8,7 +8,7 @@ class OrderService {
     
     constructor() { 
         this.QUERY_GET_ALL_ORDERS = `
-        SELECT
+                SELECT
             t.IdOrder,
             t.IdCustomer,
             t.CustomerName,
@@ -26,7 +26,7 @@ class OrderService {
         FROM
             (SELECT
                 t.*,
-                SUM(t.Fuzzy) over(partition by t.IdOrder) AS HasilPerhitunganPrioritas
+                SUM(t.Fuzzy) over(partition by t.idorder) AS HasilPerhitunganPrioritas
             FROM
                 (SELECT
                     t.*,
@@ -49,7 +49,7 @@ class OrderService {
                         INNER JOIN pp_subcriteria sc ON sc.Id = dc.IdSubCriteria
                         INNER JOIN pp_mastercriteria mc ON mc.Id = dc.IdMasterCriteria
                         INNER JOIN pp_orders o ON o.Id = dc.IdOrder
-                        INNER JOIN pp_customers c ON c.Id = o.Id
+                        INNER JOIN pp_customers c ON c.Id = o.IdCustomer
                         WHERE mc.Id <> 1
                         UNION ALL
                         SELECT
@@ -74,10 +74,10 @@ class OrderService {
                                 END AS SubCriteria,
                                 ROUND(SUM(IF(mc.CriteriaName = 'Jenis Kue', sc.CriteriaValue, NULL)), 0) AS TotalBobotJenisKue
                             FROM pp_datacontent dc
-                        INNER JOIN pp_subcriteria sc ON sc.Id = dc.IdSubCriteria
-                        INNER JOIN pp_mastercriteria mc ON mc.Id = dc.IdMasterCriteria
-                        INNER JOIN pp_orders o ON o.Id = dc.IdOrder
-                        INNER JOIN pp_customers c ON c.Id = o.Id
+                            INNER JOIN pp_subcriteria sc ON sc.Id = dc.IdSubCriteria
+                            INNER JOIN pp_mastercriteria mc ON mc.Id = dc.IdMasterCriteria
+                            INNER JOIN pp_orders o ON o.Id = dc.IdOrder
+                            INNER JOIN pp_customers c ON c.Id = o.IdCustomer
                             WHERE mc.Id = 1
                             GROUP BY mc.CriteriaName, o.Id
                             ) t
@@ -87,7 +87,7 @@ class OrderService {
                             t.IdOrder,
                             t.IdCustomer,
                             t.CustomerName,
-                            mc.Id as IdMasterCriteria,
+                            mc.Id,
                             mc.CriteriaValue AS MasterCriteriaValue,
                             mc.CriteriaName AS MasterCriteria,
                             dc.CriteriaName AS SubCriteria,
@@ -99,7 +99,7 @@ class OrderService {
                                 c.CustomerName,
                                 DATEDIFF(o.DeadlineDate, NOW()) AS IntervalDate
                             FROM pp_orders o
-                            INNER JOIN pp_customers c ON c.Id = o.Id
+                            INNER JOIN pp_customers c ON c.Id = o.IdCustomer
                             ) t
                         INNER JOIN pp_deadlinecriteria dc ON dc.Id = t.IntervalDate
                         INNER JOIN pp_mastercriteria mc ON mc.Id = dc.IdMasterCriteria
@@ -109,8 +109,8 @@ class OrderService {
                 ) t
             ) t
         INNER JOIN pp_customers c ON c.Id = t.IdCustomer
-        INNER JOIN pp_orders o ON o.Id = t.IdOrder
-        GROUP BY t.IdOrder
+        INNER JOIN pp_orders o ON o.Id = t.idorder
+        GROUP BY t.idorder
         ORDER BY t.HasilPerhitunganPrioritas desc
         `
 
@@ -193,7 +193,7 @@ class OrderService {
             const addOrder = await db('pp_orders')
                 .returning('IdOrder')
                 .insert({
-                    IdCustomer: Nama.IdCustomer,
+                    IdCustomer: Nama.Id,
                     TotalQuantity,
                     DeadlineDate
                 })
@@ -211,7 +211,7 @@ class OrderService {
             var qty = await this.checkQuantity(TotalQuantity)
 
             for(let data of JenisKue) {
-                await query(1, data.IdSubCriteria)
+                await query(1, data.Id)
             }
 
             await query(2, KebawelanPelanggan)

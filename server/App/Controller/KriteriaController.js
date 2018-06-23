@@ -2,6 +2,28 @@ const app = require('express').Router();
 const KriteriaService = require('../Services/KriteriaService')
 const service = new KriteriaService();
 
+
+//
+//
+//  ----- MASTER KRITERIA
+//
+//
+//
+app.get('/kriteria/master/list', async function(req, res) {
+    const data = await service.masterList();
+    res.status(data.status || 200).json(data);
+})
+
+app.post('/kriteria/master/detail', async function(req, res) {
+    const data = await service.masterDetail(req.body.Id);
+    res.status(data.status || 200).json(data);
+})
+
+app.post('/kriteria/master/edit', async function(req, res) {
+    const data = await service.masterEdit(req.body);
+    res.status(data.status || 200).json(data);
+})
+
 //
 //
 //  ----- JENIS KUE & FUZZY

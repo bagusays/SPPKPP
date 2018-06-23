@@ -30,15 +30,15 @@
 								<table class="table table-bordered">
 									<thead class="thead">
 										<tr>
-											<th scope="col" class="align-middle">Nama</th>
+											<th scope="col" width="10%" class="align-middle">Nama</th>
 											<th scope="col" width="20%" class="align-middle">Jenis Kue</th>
 											<th scope="col" width="5%" class="align-middle">Kebawelan Pelanggan</th>
 											<th scope="col" width="10%" class="align-middle">Kesulitan Bahan Pokok</th>
 											<th scope="col" width="5%" class="align-middle">Jarak Pengiriman</th>
-											<th scope="col" class="align-middle">Deadline</th>
+											<th scope="col" width="15%" class="align-middle">Deadline</th>
 											<th scope="col" width="8%" class="align-middle">Tenaga Kerja</th>
 											<th scope="col" width="5%" class="align-middle">Total Kuantitas</th>
-											<th scope="col" class="align-middle">Action</th>
+											<th scope="col" width="10%" class="align-middle">Action</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -48,7 +48,7 @@
 											<td class="text-center">{{data.KebawelanPelanggan}}</td>
 											<td class="text-center">{{data.KesulitanBahanPokok}}</td>
 											<td class="text-center">{{data.JarakPengiriman}}</td>
-											<td class="text-center">{{data.DeadlineDate | date}}</td>
+											<td class="text-center">{{data.DeadlineDate | date}} <br> ({{data.IntervalDeadlineHari}} days remaining)</td>
 											<td class="text-center">{{data.TenagaKerja}}</td>
 											<td class="text-center">{{data.TotalQuantity}}</td>
 											<td class="text-center">
@@ -105,7 +105,7 @@
 											<td class="text-center">{{data.KebawelanPelanggan}}</td>
 											<td class="text-center">{{data.KesulitanBahanPokok}}</td>
 											<td class="text-center">{{data.JarakPengiriman}}</td>
-											<td class="text-center">{{data.DeadlineDate | date}}</td>
+											<td class="text-center">{{data.DeadlineDate | date}} <br> ({{data.IntervalDeadlineHari}} days remaining)</td>
 											<td class="text-center">{{data.TenagaKerja}}</td>
 											<td class="text-center">{{data.TotalQuantity}}</td>
 											<td style="color: red; font-weight:bold;" class="text-center">{{data.HasilPerhitunganPrioritas.toFixed(4)}}</td>

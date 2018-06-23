@@ -59,6 +59,7 @@
 						icon: 'fa-wrench',
 						link: '/kriteria',
 						children: [
+							{title: "Master", link: '/kriteria/master', icon: 'fa-globe'},
 							{title: "Jenis Kue", link: '/kriteria/jeniskue', icon: 'fa-cutlery'},
 							{title: "Kebawelan Pelanggan", link: '/kriteria/kebawelanpelanggan', icon: 'fa-commenting-o'},
 							{title: "Kesulitan Bahan Pokok", link: '/kriteria/kesulitanbahanpokok', icon: 'fa-inbox'},

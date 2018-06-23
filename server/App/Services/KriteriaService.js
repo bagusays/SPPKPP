@@ -6,6 +6,45 @@ class KriteriaService {
 
     constructor() { }
 
+    async masterList() {
+        try {
+            const data = await db('pp_mastercriteria').select().orderBy('Id', 'asc')
+            const totalBobotMaster = _.sumBy(data, res => res.CriteriaValue)
+            return jsonParse({ 
+                result: {
+                    data,
+                    totalBobotMaster
+                } 
+            })
+        } catch (error) {
+            return jsonParse({ status: 500, message: error.message })
+        }
+    }
+
+    async masterDetail(Id) {
+        try {
+            const data = await db('pp_mastercriteria').select().where({
+                Id,
+            }).first()
+            return jsonParse({ result: data })
+        } catch (error) {
+            return jsonParse({ status: 500, message: error.message })
+        }
+    }
+
+    async masterEdit(param) {
+        try {
+            const { Id, namaKriteria, bobot } = param
+            const data = await db('pp_mastercriteria').where({ Id }).update({ 
+                CriteriaName: namaKriteria, 
+                CriteriaValue: bobot, 
+            })
+            return jsonParse({message: "Kriteria berhasil di Edit."})
+        } catch (error) {
+            return jsonParse({ status: 500, message: error.message })
+        }
+    }
+
     async jenisKueAndFuzzyList() {
         try {
             const jenisKue = await db('pp_subcriteria').select().where({IdMasterCriteria: 1}).orderBy('CriteriaValue', 'desc')

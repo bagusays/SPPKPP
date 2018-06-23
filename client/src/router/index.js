@@ -15,6 +15,9 @@ import CustomerList from '@/components/customer/CustomerList'
 import CustomerTambah from '@/components/customer/CustomerTambah'
 import CustomerEdit from '@/components/customer/CustomerEdit'
 
+import MasterList from '@/components/kriteria/master/MasterList'
+import MasterEdit from '@/components/kriteria/master/MasterEdit'
+
 import JenisKueList from '@/components/kriteria/jeniskue/JenisKueList'
 import JenisKueTambah from '@/components/kriteria/jeniskue/JenisKueTambah'
 import JenisKueEdit from '@/components/kriteria/jeniskue/JenisKueEdit'
@@ -64,9 +67,11 @@ const router = new Router({
         { path: '/customers/tambah', component: CustomerTambah, meta: { requireLogin: true } },
         { path: '/customers/edit/:id', component: CustomerEdit, meta: { requireLogin: true } },
 
+        { path: '/kriteria/master', component: MasterList, meta: { requireLogin: true } },
+        { path: '/kriteria/master/edit/:id', component: MasterEdit, meta: { requireLogin: true } },
 
         { path: '/kriteria/jeniskue', component: JenisKueList, meta: { requireLogin: true } },
-        { path: '/kriteria/JenisKue/tambah', component: JenisKueTambah, meta: { requireLogin: true } },
+        { path: '/kriteria/jenisKue/tambah', component: JenisKueTambah, meta: { requireLogin: true } },
         { path: '/kriteria/jeniskue/edit/:id', component: JenisKueEdit, meta: { requireLogin: true } },
 
         { path: '/kriteria/jeniskue/fuzzy/edit/:id', component: FuzzyEdit, meta: { requireLogin: true } },

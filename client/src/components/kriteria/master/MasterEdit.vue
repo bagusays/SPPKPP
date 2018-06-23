@@ -4,14 +4,14 @@
     <div class="content-wrapper">
         <div class="container-fluid">
             <ol class="breadcrumb">
-                <li style="font-size: 15px;" class="breadcrumb-item"> <router-link to="/kriteria/jeniskue">List Kriteria Jenis Kue</router-link>
+                <li style="font-size: 15px;" class="breadcrumb-item"> <router-link to="/kriteria/master">List Kriteria Master</router-link>
                 </li>
                 <li class="breadcrumb-item active">
-                    Tambah Kriteria Jenis Kue
+                    Edit Kriteria Master
                 </li>
             </ol>
             <div class="card">
-                <div class="card-header"><span>Tambah Kriteria Jenis Kue</span></div>
+                <div class="card-header"><span>Edit Kriteria Master</span></div>
                 <div class="card-body">
                     <form v-on:submit.prevent="onSubmit()">
                         <div class="form-group row">
@@ -26,6 +26,7 @@
                             <label class="col-md-2 col-form-label">Bobot<required-tag></required-tag></label>
                             <div class="col-md-4">
                                 <input id="bobot" type="text" v-model="form.bobot" name="bobot" :class="errors.has('bobot') ? 'is-invalid' : ''" v-validate="'required'" class="form-control" required/>
+                                <b-tooltip triggers="focus" placement="right" target="bobot">Isi dengan value 0 sampai 1. Contoh 0.2 (menggunakan titik)</b-tooltip>
                                 <p v-show="errors.has('bobot')" class="invalid-form">{{ errors.first('bobot') }}</p>
                             </div>
                         </div>
@@ -48,10 +49,12 @@ export default {
     components: {
         'Sidebar': Sidebar
     },
+    created() {
+        this.getDetail()
+    },
     data() {
         return {
             form: {
-                IdMasterKriteria: 3,
                 namaKriteria: '',
                 bobot: ''
             }
@@ -59,13 +62,27 @@ export default {
     },
     methods: {
 
+        async getDetail() {
+            try {
+                let param = {
+                    Id: this.$route.params.id
+                }
+                let result = await this.$helpers.axiosAuth.post(`/kriteria/master/detail`, param)
+                this.form.namaKriteria = result.data.result.CriteriaName
+                this.form.bobot = result.data.result.CriteriaValue
+            } catch(res) {
+                console.log(res)
+            }
+        },
+
         async onSubmit() {
             const validate = await this.$validator.validateAll();
+            this.form.Id = this.$route.params.id
             if(validate) {
-                let res = await this.$helpers.axiosAuth.post(`/kriteria/jeniskue/tambah`, this.form)
+                let res = await this.$helpers.axiosAuth.post(`/kriteria/master/edit`, this.form)
                 if(res.status == 200) {
                     await this.$helpers.alert.success(res.data.message)
-                    this.$router.push({ path: '/kriteria/jeniskue' })
+                    this.$router.push({ path: '/kriteria/master' })
                 } else
                     await this.$helpers.alert.error(res.data.message)
             }
