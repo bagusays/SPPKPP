@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import axios from 'axios'
+import jwt from 'jsonwebtoken'
+
 import HelloWorld from '@/components/HelloWorld'
 
 import Login from '@/components/login/Login'
@@ -115,12 +117,21 @@ router.beforeEach((to, from, next) => {
                 return false
             } else {
                 const token = localStorage.getItem('token')
-                const check = await axios.post('http://localhost:3000/auth/verifyToken', JSON.parse(token))
-                console.log(check)
-                if(check.status == 200)
+                const decode = jwt.decode(JSON.parse(token).token)
+                const date = Date.now() / 1000
+                if(decode.exp > date) 
                     next()
-                else
-                    next({path: '/login', params: { error: check.message }})
+                else {
+                    localStorage.removeItem('token')
+                    next({path: '/login', query: { error: 'Token is Expired' }})
+                }
+                // console.log(decode)
+                // console.log(Date.now() / 1000)
+                // const check = await axios.post('http://localhost:3000/auth/verifyToken', JSON.parse(token))
+                // if(check.status == 200)
+                //     next()
+                // else
+                //     next({path: '/login', params: { error: check.message }})
             }
         }
 

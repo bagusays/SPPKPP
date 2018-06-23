@@ -14,7 +14,7 @@ class AuthService {
 
             if(q != 0) {
                 const payload = { Username }
-                const expiresTime = { expiresIn: 3600*24 }
+                const expiresTime = { expiresIn: 24*3600 }
                 const token = jwt.sign(payload, jwtProvider.config.secretOrKey, expiresTime);
 
                 return jsonParse({ result: { token: token }})

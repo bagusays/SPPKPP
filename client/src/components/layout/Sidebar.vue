@@ -91,7 +91,6 @@
 
 		methods: {
 			routerLink(val, children) {
-				console.log(children)
 				if(children == null)
 					this.$router.push({ path: val })
 				else
