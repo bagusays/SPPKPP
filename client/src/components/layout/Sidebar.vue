@@ -23,28 +23,14 @@
 					</b-collapse>
 				</b-nav-item>
 				</li>			
+
+				<li class="nav-link">
+				<b-nav-item v-b-toggle.collapse1 class="nav-item" @click="logout()">
+					<i class="fa fa-fw fa-sign-out"></i>
+					<span class="nav-link-text"> Sign out </span>
+				</b-nav-item>
+				</li>			
 				
-				
-				<!-- <router-link class="nav-link" v-for="item in items" :key="item.title" active-class="active" v-bind:to="item.link">
-					<b-nav-item v-b-toggle.collapse1 class="nav-item" @click="routerLink(item.link, item.children)">
-						<i class="fa fa-fw" v-bind:class="item.icon"></i>
-						<span class="nav-link-text"> {{item.title}} </span>
-						<b-collapse id="collapse1">
-							<li v-for="item in item.children" :key="item.title">
-								<a href="#" class="nav-link">{{item.title}}</a>
-							</li>
-						</b-collapse>
-					</b-nav-item>
-				</router-link> -->
-			</b-navbar-nav>
-			<b-navbar-nav class="ml-auto">
-				<b-nav-item-dropdown class="bg-dark" right>
-					<!-- Using button-content slot -->
-					<template slot="button-content">
-						<strong style="color: whitesmoke">Admin</strong>
-					</template>
-					<b-dropdown-item @click="logout()">Signout</b-dropdown-item>
-				</b-nav-item-dropdown>
 			</b-navbar-nav>
 		</b-collapse>
 	</b-navbar>

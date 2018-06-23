@@ -10,8 +10,17 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="card">
-                        <div class="card-header">Kebawelan Pelanggan</div>
+                        <div class="card-header">
+                            <span class="center">Kebawelan Pelanggan</span>
+                            <div class="float-right">
+								<router-link to="/kriteria/kebawelanpelanggan/tambah" class="btn btn-sm button-action btn-tambah">
+									<i class="fa fa-fw fa-plus"></i>
+                                    <span>Tambah</span>
+								</router-link>
+							</div>
+                        </div>
                         <div class="card-body">
+                            
                             <div class="table-responsive">
                                 <table class="table table-bordered">
                                     <thead class="thead">
@@ -26,12 +35,12 @@
                                             <td class="text-center">{{data.CriteriaName}}</td>
                                             <td class="text-center">{{data.CriteriaValue}}</td>
                                             <td class="text-center">
-                                                <!-- <router-link :to="'/kriteria/edit/' + data.IdMasterCriteria + '/' + data.Id"> -->
-                                                    <button @click="onEdit(data.Id)" class="btn btn-sm button-action">
+                                                <router-link :to="'/kriteria/kebawelanpelanggan/edit/' + data.Id">
+                                                    <button class="btn btn-sm button-action">
                                                         <i class="fa fa-fw fa-edit"></i>
                                                     </button>
-                                                <!-- </router-link> -->
-                                                
+                                                </router-link>
+
                                                 <button @click="onDelete(data.Id)" class="btn btn-sm button-action">
                                                     <i class="fa fa-fw fa-trash"> </i>
                                                 </button>
@@ -75,18 +84,34 @@ export default {
             this.data = result.data.result;
         },
 
-        async onDelete(IdCustomer) {
+        async onDelete(Id) {
             const confirm = await this.$helpers.alert.delete()
             if (!confirm.value)
                 return false
 
-            const res = await this.$helpers.axiosAuth.post(`/customers/delete`, {IdCustomer})
+            const res = await this.$helpers.axiosAuth.post(`/kriteria/kebawelanpelanggan/delete`, {Id})
             if(res.status == 200) {
                 await this.$helpers.alert.success(res.data.message)
-                this.getCustomers()
+                this.getList()
             } else
                 this.$helpers.alert.error(res.data.message)
         }
     }
 }
 </script>
+
+<style lang="scss" scoped>
+    .card-header{
+        position: relative;
+    }
+    .center {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+    .btn-tambah {
+        height: 29px;
+        background-color: #343E48;
+    }
+</style>

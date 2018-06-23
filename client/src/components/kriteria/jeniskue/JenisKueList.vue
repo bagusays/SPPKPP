@@ -6,11 +6,33 @@
             <ol class="breadcrumb">
                 <li style="font-size: 15px;" class="breadcrumb-item active">Kriteria Jenis Kue</li>
             </ol>
+
+            <b-alert show variant="info" v-if="checkBobot">
+                <strong>Perhatian!</strong><br>
+                <span>
+                    Jika ingin mengubah kriteria, total bobot jenis kue harus sama dengan total bobot fuzzy sebelum menggunakan pencarian prioritas.
+                </span>
+            </b-alert>
+
+            <b-alert show variant="danger" v-if="!checkBobot">
+                <strong>Perhatian!</strong><br>
+                <span>
+                    Total bobot jenis kue dan bobot fuzzy belum sama, silahkan ubah kriteria sebelum menggunakan fitur pencarian prioritas!
+                </span>
+            </b-alert>
             
             <div class="row">
                 <div class="col-md-6">
                     <div class="card">
-                        <div class="card-header">Jenis Kue</div>
+                        <div class="card-header">
+                            <span class="center">Jenis Kue</span>
+                            <div class="float-right">
+								<router-link to="/kriteria/jeniskue/tambah" class="btn btn-sm button-action btn-tambah">
+									<i class="fa fa-fw fa-plus"></i>
+                                    <span>Tambah</span>
+								</router-link>
+							</div>
+                        </div>
                         <div class="card-body">
                             <div class="table-responsive">
                                 <table class="table table-bordered">
@@ -26,13 +48,13 @@
                                             <td class="text-center">{{data.CriteriaName}}</td>
                                             <td class="text-center">{{data.CriteriaValue}}</td>
                                             <td class="text-center">
-                                                <!-- <router-link :to="'/kriteria/edit/' + data.IdMasterCriteria + '/' + data.Id"> -->
-                                                    <button @click="onEdit(data.Id)" class="btn btn-sm button-action">
+                                                <router-link :to="'/kriteria/jeniskue/edit/' + data.Id">
+                                                    <button class="btn btn-sm button-action">
                                                         <i class="fa fa-fw fa-edit"></i>
                                                     </button>
-                                                <!-- </router-link> -->
+                                                </router-link>
                                                 
-                                                <button @click="onDelete(data.Id)" class="btn btn-sm button-action">
+                                                <button @click="onDeleteJenisKue(data.Id)" class="btn btn-sm button-action">
                                                     <i class="fa fa-fw fa-trash"> </i>
                                                 </button>
                                             </td>
@@ -40,7 +62,7 @@
                                     </tbody>
                                 </table>
 
-                                <span>(<span style="color:red">*</span>) Total bobot jenis kue : {{data.totalBobotJenisKue}}</span>
+                                <span>(<span style="color:red">*</span>) Total bobot jenis kue : <span :style="!checkBobot ? {color: 'red', fontWeight: 'bold'} : 'null'">{{data.totalBobotJenisKue}}</span></span>
                             </div>
                         </div>
                     </div>
@@ -48,7 +70,15 @@
 
                 <div class="col-md-6">
                     <div class="card">
-                        <div class="card-header">Fuzzy Jenis Kue</div>
+                        <div class="card-header">
+                            <span class="center">Fuzzy Jenis Kue</span>
+                            <div class="float-right">
+								<router-link to="/kriteria/jeniskue/fuzzy/tambah" class="btn btn-sm button-action btn-tambah">
+									<i class="fa fa-fw fa-plus"></i>
+                                    <span>Tambah</span>
+								</router-link>
+							</div>
+                        </div>
                         <div class="card-body">
                             <div class="table-responsive">
                                 <table class="table table-bordered">
@@ -64,20 +94,20 @@
                                             <td class="text-center">{{data.CriteriaName}}</td>
                                             <td class="text-center">{{data.CriteriaValue}}</td>
                                             <td class="text-center">
-                                                <!-- <router-link :to="'/kriteria/edit/' + data.IdMasterCriteria + '/' + data.Id"> -->
-                                                    <button @click="onEdit(data.Id)" class="btn btn-sm button-action">
+                                                <router-link :to="'/kriteria/jeniskue/fuzzy/edit/' + data.Id">
+                                                    <button class="btn btn-sm button-action">
                                                         <i class="fa fa-fw fa-edit"></i>
                                                     </button>
-                                                <!-- </router-link> -->
+                                                </router-link>
                                                 
-                                                <button @click="onDelete(data.Id)" class="btn btn-sm button-action">
+                                                <button @click="onDeleteFuzzyKue(data.Id)" class="btn btn-sm button-action">
                                                     <i class="fa fa-fw fa-trash"> </i>
                                                 </button>
                                             </td>
                                         </tr>
                                     </tbody>
                                 </table>
-                                <span>(<span style="color:red">*</span>) Total bobot fuzzy : {{data.totalBobotFuzzy}}</span>
+                                <span>(<span style="color:red">*</span>) Total bobot fuzzy : <span :style="!checkBobot ? {color: 'red', fontWeight: 'bold'} : 'null'">{{data.totalBobotFuzzy}}</span></span>
                             </div>
                         </div>
                     </div>
@@ -110,6 +140,12 @@ export default {
         this.getList()
     },
 
+    computed: {
+        checkBobot() {
+            return this.data.totalBobotJenisKue == this.data.totalBobotFuzzy
+        }
+    },
+
     methods: {
 
         async getList() {
@@ -118,18 +154,48 @@ export default {
             this.data = result.data.result;
         },
 
-        async onDelete(IdCustomer) {
+        async onDeleteJenisKue(Id) {
             const confirm = await this.$helpers.alert.delete()
             if (!confirm.value)
                 return false
 
-            const res = await this.$helpers.axiosAuth.post(`/customers/delete`, {IdCustomer})
+            const res = await this.$helpers.axiosAuth.post(`/kriteria/jeniskue/delete`, {Id})
             if(res.status == 200) {
                 await this.$helpers.alert.success(res.data.message)
-                this.getCustomers()
+                this.getList()
+            } else
+                this.$helpers.alert.error(res.data.message)
+        },
+
+        async onDeleteFuzzyKue(Id) {
+            const confirm = await this.$helpers.alert.delete()
+            if (!confirm.value)
+                return false
+
+            const res = await this.$helpers.axiosAuth.post(`/kriteria/jeniskue/fuzzy/delete`, {Id})
+            if(res.status == 200) {
+                await this.$helpers.alert.success(res.data.message)
+                this.getList()
             } else
                 this.$helpers.alert.error(res.data.message)
         }
     }
 }
 </script>
+
+<style lang="scss" scoped>
+    .card-header{
+        position: relative;
+    }
+    .center {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+    .btn-tambah {
+        height: 29px;
+        background-color: #343E48;
+    }
+</style>
+
