@@ -151,7 +151,7 @@
 			if (this.search == '')
 				return data;
 			else
-				return data.filter((result) => result.nama.toLowerCase().includes(this.search.toLowerCase()))
+				return data.filter((result) => result.CustomerName.toLowerCase().includes(this.search.toLowerCase()))
 		}
 	},
 	methods: {

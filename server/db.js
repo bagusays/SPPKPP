@@ -4,7 +4,7 @@ var knex = require('knex')({
       host : '127.0.0.1',
       user : 'root',
       password : '1234',
-      database : 'sppk_pp_saw'
+      database : 'sppk_pp_saw_fix'
     }
   });
 
