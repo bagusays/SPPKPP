@@ -119,11 +119,17 @@ class KriteriaService {
     async fuzzyKueTambah(param) {
         try {
             const { namaKriteria, bobot } = param
-            const query = await db('pp_fuzzyjeniskuecriteria').insert({
-                Id: namaKriteria,
-                CriteriaName: namaKriteria,
-                CriteriaValue: bobot,
-            })
+            var max = await db('pp_fuzzyjeniskuecriteria').select().orderBy('Id', 'desc').first()
+            max = max.Id + 1
+            if(max.toString() === namaKriteria) {
+                const query = await db('pp_fuzzyjeniskuecriteria').insert({
+                    Id: namaKriteria,
+                    CriteriaName: namaKriteria,
+                    CriteriaValue: bobot,
+                })
+            } else {
+                return jsonParse({result: "error", message: "Kriteria harus berurutan, tidak boleh dilongkap."})    
+            }
             return jsonParse({message: "Kriteria berhasil di tambah."})
         } catch (error) {
             return jsonParse({ status: 500, message: error.message })

@@ -63,11 +63,16 @@ export default {
             const validate = await this.$validator.validateAll();
             if(validate) {
                 let res = await this.$helpers.axiosAuth.post(`/kriteria/jeniskue/fuzzy/tambah`, this.form)
+                console.log(res)
+                if(res.data.result === "error") {
+                    await this.$helpers.alert.error(res.data.message)
+                    return false
+                }
+
                 if(res.status == 200) {
                     await this.$helpers.alert.success(res.data.message)
                     this.$router.push({ path: '/kriteria/jeniskue' })
-                } else
-                    await this.$helpers.alert.error(res.data.message)
+                }
             }
         }
     }
