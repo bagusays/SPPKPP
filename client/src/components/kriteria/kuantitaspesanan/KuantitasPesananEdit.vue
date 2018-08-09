@@ -123,12 +123,12 @@ export default {
                 }
                 this.form.Id = this.$route.params.id
                 this.form.namaKriteria = `${this.form.valueSlider[0]}-${this.form.valueSlider[1]}`
-                // let res = await this.$helpers.axiosAuth.post(`/kriteria/kuantitaspesanan/edit`, this.form)
-                // if(res.status == 200) {
-                //     await this.$helpers.alert.success(res.data.message)
-                //     this.$router.push({ path: '/kriteria/kuantitaspesanan' })
-                // } else
-                //     await this.$helpers.alert.error(res.data.message)
+                let res = await this.$helpers.axiosAuth.post(`/kriteria/kuantitaspesanan/edit`, this.form)
+                if(res.status == 200) {
+                    await this.$helpers.alert.success(res.data.message)
+                    this.$router.push({ path: '/kriteria/kuantitaspesanan' })
+                } else
+                    await this.$helpers.alert.error(res.data.message)
             }
         }
     }
