@@ -26,7 +26,7 @@
                         <div class="form-group row">
                             <label class="col-md-2 col-form-label">No Telepon<required-tag></required-tag></label>
                             <div class="col-md-4">
-                                <input type="text" v-model="form.PhoneNumber" name="noTelepon" :class="errors.has('noTelepon') ? 'is-invalid' : ''" v-validate="'required|numeric'" class="form-control" required/>
+                                <input type="text" v-model="form.PhoneNumber" name="noTelepon" :class="errors.has('noTelepon') ? 'is-invalid' : ''" v-validate="'required|numeric|max:13'" class="form-control" required/>
                                 <p v-show="errors.has('noTelepon')" class="invalid-form">{{ errors.first('noTelepon') }}</p>
                             </div>
                         </div>
