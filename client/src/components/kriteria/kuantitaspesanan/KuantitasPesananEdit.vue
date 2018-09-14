@@ -66,7 +66,7 @@ export default {
                 height: 5,
                 dotSize: 16,
                 min: 1,
-                max: 50,
+                max: 60,
                 // disabled: false,
                 // show: true,
                 tooltip: "always",
