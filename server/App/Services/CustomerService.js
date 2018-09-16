@@ -56,7 +56,8 @@ class CustomerService {
 
             return jsonParse({message: "Data customer berhasil di hapus." })
         } catch (error) {
-            return jsonParse({ status: 500, message: error.message })
+            if(error.code == 'ER_ROW_IS_REFERENCED_2')
+                return jsonParse({ status: 500, message: 'Customer tidak dapat dihapus jika masih digunakan' })
         }
     }
 }

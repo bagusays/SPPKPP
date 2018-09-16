@@ -98,12 +98,15 @@ export default {
             if (!confirm.value)
                 return false
 
-            const res = await this.$helpers.axiosAuth.post(`/customers/delete`, {IdCustomer})
-            if(res.status == 200) {
-                await this.$helpers.alert.success(res.data.message)
-                this.getCustomers()
-            } else
-                this.$helpers.alert.error(res.data.message)
+            try {
+                const res = await this.$helpers.axiosAuth.post(`/customers/delete`, {IdCustomer})
+                if(res.status == 200) {
+                    await this.$helpers.alert.success(res.data.message)
+                    this.getCustomers()
+                }
+            } catch (error) {
+                this.$helpers.alert.error(error.response.data.message)
+            }
         }
     }
 }

@@ -478,7 +478,8 @@ class KriteriaService {
         try {
             const data = await db('pp_subcriteria').where({Id}).del();
         } catch (error) {
-            return error
+            if(error.code == 'ER_ROW_IS_REFERENCED_2')
+                throw Error('Kriteria tidak dapat dihapus jika masih digunakan')
         }
     }
 }

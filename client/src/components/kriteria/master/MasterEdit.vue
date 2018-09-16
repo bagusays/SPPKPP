@@ -14,13 +14,13 @@
                 <div class="card-header"><span>Edit Kriteria Master</span></div>
                 <div class="card-body">
                     <form v-on:submit.prevent="onSubmit()">
-                        <div class="form-group row">
+                        <!-- <div class="form-group row">
                             <label class="col-md-2 col-form-label">Nama Kriteria<required-tag></required-tag></label>
                             <div class="col-md-4">
                                 <input type="text" v-model="form.namaKriteria" v-bind:class="errors.has('namaKriteria') ? 'is-invalid' : ''" name="namaKriteria" v-validate="'required'" class="form-control" required/>
                                 <p v-show="errors.has('namaKriteria')" class="invalid-form">{{ errors.first('namaKriteria') }}</p>
                             </div>
-                        </div>
+                        </div> -->
 
                         <div class="form-group row">
                             <label class="col-md-2 col-form-label">Bobot<required-tag></required-tag></label>

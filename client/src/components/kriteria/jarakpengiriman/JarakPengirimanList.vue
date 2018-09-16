@@ -89,12 +89,15 @@ export default {
             if (!confirm.value)
                 return false
 
-            const res = await this.$helpers.axiosAuth.post(`/kriteria/jarakpengiriman/delete`, {Id})
-            if(res.status == 200) {
-                await this.$helpers.alert.success(res.data.message)
-                this.getList()
-            } else
-                this.$helpers.alert.error(res.data.message)
+            try {
+                const res = await this.$helpers.axiosAuth.post(`/kriteria/jarakpengiriman/delete`, {Id})
+                if(res.status == 200) {
+                    await this.$helpers.alert.success(res.data.message)
+                    this.getList()
+                }
+            } catch (error) {
+                this.$helpers.alert.error(error.response.data.message)
+            }
         }
     }
 }
