@@ -22,7 +22,7 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fa fa-key"> </i></span>
                             </div>
-                            <input type="text" v-model="form.Password" name="password" placeholder="Password" :class="errors.has('password') ? 'is-invalid' : ''" v-validate="'required'" class="form-control" required/>
+                            <input type="password" v-model="form.Password" name="password" placeholder="Password" :class="errors.has('password') ? 'is-invalid' : ''" v-validate="'required'" class="form-control" required/>
                         </div>
                         <div class="col-md-12">
                             <p v-show="errors.has('password')" class="invalid-form">{{ errors.first('password') }}</p>

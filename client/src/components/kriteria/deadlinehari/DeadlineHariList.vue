@@ -11,13 +11,13 @@
                 <div class="col-md-6">
                     <div class="card">
                         <div class="card-header">Kriteria Deadline Hari
-                            <!-- <span class="center"></span>
+                            <span class="center"></span>
                             <div class="float-right">
 								<router-link to="/kriteria/deadlinehari/tambah" class="btn btn-sm button-action btn-tambah">
 									<i class="fa fa-fw fa-plus"></i>
                                     <span>Tambah</span>
 								</router-link>
-							</div> -->
+							</div>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
@@ -40,9 +40,9 @@
                                                     </button>
                                                 </router-link>
                                                 
-                                                <!-- <button @click="onDelete(data.Id)" class="btn btn-sm button-action">
+                                                <button @click="onDelete(data.Id)" class="btn btn-sm button-action">
                                                     <i class="fa fa-fw fa-trash"> </i>
-                                                </button> -->
+                                                </button>
                                             </td>
                                         </tr>
                                     </tbody>

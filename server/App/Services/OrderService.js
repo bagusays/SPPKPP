@@ -241,7 +241,7 @@ class OrderService {
         try {
             const { IdOrder, Nama, JenisKue, TotalQuantity, DeadlineDate, KebawelanPelanggan, KesulitanBahanPokok, JarakPengiriman, TenagaKerja } = param
             const order = await db('pp_orders').where({Id: IdOrder}).update({
-                IdCustomer: Nama.IdCustomer,
+                IdCustomer: Nama.Id,
                 TotalQuantity: TotalQuantity,
                 DeadlineDate: DeadlineDate
             })
